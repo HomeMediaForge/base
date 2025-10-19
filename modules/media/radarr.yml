@@ -1,0 +1,24 @@
+networks:
+  media:
+    external: true
+    name: media_net
+    driver: bridge
+    attachable: true
+
+services:
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${STACK_CONFIG_DIR}/radarr:/config
+      - ${STACK_MEDIA_ROUTE_MOVIES}:/movies
+      - ${STACK_MEDIA_ROUTE_CONCERTS}:/concerts
+      - ${STACK_DOWNLOADS_DIR_COMPLETED}:/downloads
+    restart: unless-stopped
+    networks:
+      - media
+

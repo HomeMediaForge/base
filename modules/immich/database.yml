@@ -1,0 +1,34 @@
+networks:
+  backend:
+    external: true
+    name: backend_net
+    driver: bridge
+    attachable: true
+services:
+  database:
+    image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
+    container_name: database
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - TZ=${TZ}
+    volumes:
+      - ${STACK_CONFIG_DIR}/immich/db:/var/lib/postgresql/data
+      - ${STACK_CONFIG_DIR}/immich/conf:/etc/postgresql
+      - ${STACK_CONFIG_DIR}/immich/init.sql:/docker-entrypoint-initdb.d/init.sql
+    command: >
+      postgres -c config_file=/etc/postgresql/postgresql.conf
+    shm_size: 128mb
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+    networks:
+      - backend

@@ -1,0 +1,27 @@
+networks:
+  backend:
+    external: true
+    name: backend_net
+    driver: bridge
+    attachable: true
+services:
+  auto-networks:
+    image: docker:cli
+    container_name: auto-networks
+    depends_on:
+      glances:
+        condition: service_started
+    command: >
+      sh -c "
+        echo '🔄 Esperando que los contenedores estén activos...';
+        sleep 10;
+        echo '🔗 Conectando Portainer y Glances a sus redes...';
+        docker network connect proxy_net portainer 2>/dev/null || echo 'Portainer ya conectado o red no existe';
+        # docker network connect monitoring_net glances 2>/dev/null || echo 'Glances ya conectado o red no existe';
+        echo '✅ Redes sincronizadas correctamente.';
+      "
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: "no"
+    networks:
+      - backend

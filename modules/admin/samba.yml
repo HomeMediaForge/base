@@ -1,0 +1,14 @@
+services:
+  samba:
+    image: dockurr/samba
+    container_name: samba
+    network_mode: host
+    environment:
+      - USER=${USER}
+      - PASS=${PASS}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    volumes:
+      - ${STACK_CONFIG_DIR}/samba/smb.conf:/etc/samba/smb.conf
+      - ${STACK_STORAGE_ROOT_DIR}:/storage
+    restart: unless-stopped

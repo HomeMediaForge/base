@@ -1,0 +1,47 @@
+networks:
+  media:
+    external: true
+    name: media_net
+    driver: bridge
+    attachable: true
+  backend:
+    external: true
+    name: backend_net
+    driver: bridge
+    attachable: true
+
+services:
+  immich:
+    image: ghcr.io/immich-app/immich-server:release
+    container_name: immich
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    restart: unless-stopped
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE_NAME=immich
+      - DB_HOST=database
+      - DB_PORT=5432
+      - REDIS_URL={REDIS_URL}
+      - NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES}
+      - NVIDIA_DRIVER_CAPABILITIES=${NVIDIA_DRIVER_CAPABILITIES}
+    volumes:
+      - ${STACK_MEDIA_ROUTE_PHOTOS}:/data
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "2283:2283"
+    networks:
+      - backend
+      - media

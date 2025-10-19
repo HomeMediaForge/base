@@ -1,0 +1,19 @@
+networks:
+  media:
+    external: true
+    name: media_net
+    driver: bridge
+    attachable: true
+
+services:
+  filebrowser:
+    image: filebrowser/filebrowser
+    container_name: filebrowser
+    restart: unless-stopped
+    user: "${PUID}:${PGID}"
+    volumes:
+      - ${STACK_STORAGE_ROOT_DIR}:/srv
+      - ${STACK_CONFIG_DIR}/filebrowser/db/filebrowser.db:/database.db
+      - ${STACK_CONFIG_DIR}/filebrowser/.filebrowser.json:/filebrowser.json
+    networks:
+      - media

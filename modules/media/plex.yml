@@ -1,0 +1,31 @@
+networks:
+  media:
+    external: true
+    name: media_net
+    driver: bridge
+    attachable: true
+
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    hostname: ${HOSTNAME}
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES}
+      - NVIDIA_DRIVER_CAPABILITIES=${NVIDIA_DRIVER_CAPABILITIES}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - VERSION=${VERSION}
+      - TZ=${TZ}
+    volumes:
+      - ${STACK_CONFIG_DIR}/plex_library:/config
+      - ${STACK_MEDIA_ROUTE_MOVIES}:/movies
+      - ${STACK_MEDIA_ROUTE_TV}:/tv
+      - ${STACK_MEDIA_ROUTE_ANIME}:/anime
+      - ${STACK_MEDIA_ROUTE_MUSIC}:/music
+      - ${STACK_MEDIA_ROUTE_CONCERTS}:/concerts
+      - ${STACK_MEDIA_TRANSCODE_DIR}:/transcode
+    restart: unless-stopped
+    networks:
+      - media

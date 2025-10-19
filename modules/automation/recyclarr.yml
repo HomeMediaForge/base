@@ -1,0 +1,19 @@
+networks:
+  media:
+    external: true
+    name: media_net
+    driver: bridge
+    attachable: true
+services:
+  recyclarr:
+    image: ghcr.io/recyclarr/recyclarr:latest
+    container_name: recyclarr
+    volumes:
+      - ${STACK_CONFIG_DIR}/recyclarr:/config
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    restart: unless-stopped
+    networks:
+      - media

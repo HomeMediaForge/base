@@ -1,0 +1,20 @@
+networks:
+  media:
+    external: true
+    name: media_net
+    driver: bridge
+    attachable: true
+
+services:
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:latest
+    container_name: overseerr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - ${STACK_CONFIG_DIR}/overseer:/config
+    restart: unless-stopped
+    networks:
+      - media

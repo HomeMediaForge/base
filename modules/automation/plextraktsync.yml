@@ -1,0 +1,20 @@
+networks:
+  media:
+    external: true
+    name: media_net
+    driver: bridge
+    attachable: true
+services:
+  plextraktsync:
+    image: ghcr.io/taxel/plextraktsync
+    command: watch
+    container_name: plextraktsync
+    volumes:
+      - ${STACK_CONFIG_DIR}/plextraktsync:/app/config
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    restart: unless-stopped
+    networks:
+      - media

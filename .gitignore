@@ -1,0 +1,24 @@
+# Archivos de entorno
+.env
+.env.*
+
+# Configuraciones locales
+*/config/*
+*/data/*
+*.zip
+*.7z
+*.bak
+*.tar
+*.tar.gz
+
+# Archivos temporales
+__pycache__/
+*.log
+*.tmp
+*.swp
+
+# IDE / Sistema
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

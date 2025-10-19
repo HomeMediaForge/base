@@ -1,0 +1,22 @@
+networks:
+  proxy:
+    external: true
+    name: proxy_net
+    driver: bridge
+    attachable: true
+
+services:
+  organizr:
+    image: organizr/organizr
+    container_name: organizr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${STACK_CONFIG_DIR}/organizr:/config
+    ports:
+      - 5050:80
+    restart: unless-stopped
+    networks:
+      - proxy

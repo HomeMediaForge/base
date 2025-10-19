@@ -1,0 +1,22 @@
+networks:
+  media:
+    external: true
+    name: media_net
+    driver: bridge
+    attachable: true
+
+services:
+  whisparr:
+    image: ghcr.io/thespad/whisparr:latest
+    container_name: whisparr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${STACK_CONFIG_DIR}:/config
+      - ${STACK_DOWNLOADS_DIR_COMPLETED}:/downloads
+      - ${STACK_MEDIA_ROUTE_ADULT}:/movies # Carpeta personalizada para Whisparr
+    restart: unless-stopped
+    networks:
+      - media

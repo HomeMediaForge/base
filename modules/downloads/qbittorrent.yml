@@ -1,0 +1,24 @@
+networks:
+  media:
+    external: true
+    name: media_net
+    driver: bridge
+    attachable: true
+
+services:
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=${WEBUI_PORT}
+    volumes:
+      - ${STACK_CONFIG_DIR}/qbittorrent:/config
+      - ${STACK_DOWNLOADS_DIR_COMPLETED}:/downloads
+      - ${STACK_DOWNLOADS_DIR_INCOMPLETED}:/incompleted
+      - ${STACK_BLACKHOLE_DIR}:/blackhole
+    restart: unless-stopped
+    networks:
+      - media

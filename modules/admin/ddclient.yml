@@ -1,0 +1,20 @@
+networks:
+  proxy:
+    external: true
+    name: proxy_net
+    driver: bridge
+    attachable: true
+
+services:
+  ddclient:
+    image: lscr.io/linuxserver/ddclient:latest
+    container_name: ddclient
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${STACK_CONFIG_DIR}/ddclient:/config
+    restart: unless-stopped
+    networks:
+      - proxy

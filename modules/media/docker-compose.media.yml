@@ -1,0 +1,18 @@
+networks:
+  media:
+    external: true
+    name: media_net
+    driver: bridge
+    attachable: true
+
+include:
+  - plex.yml
+  - jellyfin.yml
+  - radarr.yml
+  - sonarr.yml
+  - lidarr.yml
+  - whisparr.yml
+  - bazarr.yml
+  - flaresolverr.yml
+  - calibre.yml
+  - overseerr.yml

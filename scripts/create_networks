@@ -1,0 +1,15 @@
+# ==========================================================
+# 🕸️ Crear redes externas para home-server-stack
+# ==========================================================
+
+for net in proxy_net media_net backend_net monitoring_net; do
+  if ! docker network ls --format '{{.Name}}' | grep -q "^${net}$"; then
+    echo "[+] Creando red: $net"
+    docker network create \
+      --driver bridge \
+      --attachable \
+      $net
+  else
+    echo "[✓] Red ya existe: $net"
+  fi
+done

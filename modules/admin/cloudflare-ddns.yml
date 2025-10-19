@@ -1,0 +1,23 @@
+networks:
+  proxy:
+    external: true
+    name: proxy_net
+    driver: bridge
+    attachable: true
+services:
+  cloudflare-ddns:
+    image: favonia/cloudflare-ddns:latest
+    container_name: cloudflare-ddns
+    environment:
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+      - DOMAINS=${DOMAINS}
+      - PROXIED=${PROXIED}
+      - IP6=${IP6}
+      - IP4=${IP4}
+      - RRTYPE=${RRTYPE}
+      - LOG_LEVEL=${LOG_LEVEL}
+      - TZ=${TZ}
+      - IP6_PROVIDER=none
+    restart: unless-stopped
+    networks:
+      - proxy

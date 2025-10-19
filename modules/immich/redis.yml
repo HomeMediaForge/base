@@ -1,0 +1,16 @@
+networks:
+  backend:
+    external: true
+    name: backend_net
+    driver: bridge
+    attachable: true
+
+services:
+  redis:
+    image: docker.io/valkey/valkey:8-bookworm
+    container_name: redis
+    restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+    networks:
+      - backend

@@ -1,0 +1,25 @@
+networks:
+  monitoring:
+    external: true
+    name: monitoring_net
+    driver: bridge
+    attachable: true
+
+services:
+  glances:
+    image: nicolargo/glances:latest
+    container_name: glances
+    hostname: ${HOSTNAME}
+    pid: host
+    #network_mode: host
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - GLANCES_OPT=${GLANCES_OPT}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - monitoring

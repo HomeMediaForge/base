@@ -1,0 +1,13 @@
+networks:
+  media:
+    external: true
+    name: media_net
+    driver: bridge
+    attachable: true
+
+include:
+  - jackett.yml
+  - prowlarr.yml
+  - pyload.yml
+  - qbittorrent.yml
+  - sabnzbd.yml

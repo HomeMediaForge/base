@@ -1,0 +1,22 @@
+networks:
+  media:
+    external: true
+    name: media_net
+    driver: bridge
+    attachable: true
+
+services:
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${STACK_CONFIG_DIR}/lidarr:/config
+      - ${STACK_MEDIA_ROUTE_MUSIC}:/music
+      - ${STACK_DOWNLOADS_DIR_COMPLETED}:/downloads
+    restart: unless-stopped
+    networks:
+      - media

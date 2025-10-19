@@ -1,0 +1,22 @@
+networks:
+  media:
+    external: true
+    name: media_net
+    driver: bridge
+    attachable: true
+
+services:
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${STACK_CONFIG_DIR}/sabnzbd:/config
+      - ${STACK_DOWNLOADS_DIR_COMPLETED}:/downloads
+      - ${STACK_DOWNLOADS_DIR_INCOMPLETED}:/incompleted
+    restart: unless-stopped
+    networks:
+      - media

@@ -1,0 +1,17 @@
+networks:
+  backend:
+    external: true
+    name: backend_net
+    driver: bridge
+    attachable: true
+  media:
+    external: true
+    name: media_net
+    driver: bridge
+    attachable: true
+
+include:
+  - database.yml
+  - immich-machine-learning.yml
+  - immich.yml
+  - redis.yml

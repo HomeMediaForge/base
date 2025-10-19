@@ -1,0 +1,30 @@
+networks:
+  media:
+    external: true
+    name: media_net
+    driver: bridge
+    attachable: true
+
+services:
+  ofelia:
+    image: mcuadros/ofelia:0.3
+    container_name: ofelia
+    command: daemon --docker
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ${STACK_CONFIG_DIR}/ofelia/logs:/var/log
+    labels:
+      ofelia.job-exec.plextraktsync.schedule: "0 0,12 * * *"
+      ofelia.job-exec.plextraktsync.container: "plextraktsync"
+      ofelia.job-exec.plextraktsync.command: "plextraktsync sync"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m" # Tamaño máximo del log (10 MB)
+        max-file: "3" # Retiene 3 archivos rotados
+    restart: unless-stopped
+    networks:
+      - media

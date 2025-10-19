@@ -1,0 +1,27 @@
+networks:
+  media:
+    external: true
+    name: media_net
+    driver: bridge
+    attachable: true
+  proxy:
+    external: true
+    name: proxy_net
+    driver: bridge
+    attachable: true
+  monitoring:
+    external: true
+    name: monitoring_net
+    driver: bridge
+    attachable: true
+
+include:
+  - filebrowser.yml
+  - organizr.yml
+  - swag.yml
+  - tautulli.yml
+  - samba.yml
+  - auto-networks.yml
+  - glances.yml
+  - cloudflare-ddns.yml
+  - ddclient.yml

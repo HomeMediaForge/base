@@ -1,0 +1,44 @@
+networks:
+  proxy:
+    external: true
+    name: proxy_net
+    driver: bridge
+    attachable: true
+  media:
+    external: true
+    name: media_net
+    driver: bridge
+    attachable: true
+  monitoring:
+    external: true
+    name: monitoring_net
+    driver: bridge
+    attachable: true
+
+services:
+  swag:
+    image: lscr.io/linuxserver/swag
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - URL=${URL}
+      - SUBDOMAINS=${SUBDOMAINS}
+      - VALIDATION=${VALIDATION}
+      - DNSPLUGIN=${DNSPLUGIN}
+      - EMAIL=${EMAIL}
+      - STAGING=${STAGING}
+      - PROPAGATION=${PROPAGATION}
+    volumes:
+      - ${STACK_CONFIG_DIR}/swag:/config
+    ports:
+      - 443:443
+      - 80:80
+    restart: unless-stopped
+    networks:
+      - proxy
+      - media
+      - monitoring
