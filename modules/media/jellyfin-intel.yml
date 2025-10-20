@@ -22,7 +22,7 @@ services:
     devices:
       - /dev/dri/renderD128:/dev/dri/renderD128
     group_add:
-      - "render" # o el GID numérico si es requerido
+      - "${RENDER_GID}" # o el GID numérico si es requerido
     restart: unless-stopped
     networks:
       homemediaforge_net:
