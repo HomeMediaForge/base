@@ -1,15 +1,44 @@
 networks:
   homemediaforge_net:
-    name: homemediaforge_net
+    name: ${HOMEMEDIAFORGE_NET_NAME:-homemediaforge_net}
     driver: bridge
     ipam:
       config:
-        - subnet: 172.30.0.0/24
+        - subnet: ${HOMEMEDIAFORGE_NET_SUBNET:-172.30.0.0/24}
 
 include:
-  - modules/admin/docker-compose.admin.yml
-  - modules/automation/docker-compose.automation.yml
-  - modules/downloads/docker-compose.downloads.yml
-  - modules/immich/docker-compose.immich.yml
-  - modules/media/docker-compose.media.yml
-  - modules/security/docker-compose.security.yml
+  - modules/admin/auto-networks.yml
+  - modules/admin/cloudflare-ddns.yml
+  - modules/admin/ddclient.yml
+  - modules/admin/filebrowser.yml
+  - modules/admin/glances.yml
+  - modules/admin/organizr.yml
+  - modules/admin/samba.yml
+  - modules/admin/swag.yml
+  - modules/admin/tautulli.yml
+  - modules/automation/ofelia.yml
+  - modules/automation/plextraktsync.yml
+  - modules/automation/recyclarr.yml
+  - modules/automation/resilio-sync.yml
+  - modules/automation/watchtower.yml
+  - modules/downloads/jackett.yml
+  - modules/downloads/prowlarr.yml
+  - modules/downloads/pyload.yml
+  - modules/downloads/qbittorrent.yml
+  - modules/downloads/sabnzbd.yml
+  - modules/immich/database.yml
+  - modules/immich/immich-machine-learning.yml
+  - modules/immich/immich.yml
+  - modules/immich/redis.yml
+  - modules/media/bazarr.yml
+  - modules/media/calibre.yml
+  - modules/media/flaresolverr.yml
+  - modules/media/jellyfin-intel.yml
+  - modules/media/jellyfin.yml
+  - modules/media/lidarr.yml
+  - modules/media/overseerr.yml
+  - modules/media/plex.yml
+  - modules/media/radarr.yml
+  - modules/media/sonarr.yml
+  - modules/media/whisparr.yml
+  - modules/security/fail2ban.yml

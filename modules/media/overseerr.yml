@@ -13,12 +13,12 @@ services:
     restart: unless-stopped
     networks:
       homemediaforge_net:
-        ipv4_address: 172.30.0.39
+        ipv4_address: ${OVERSEERR_IPV4:-172.30.0.39}
 
 networks:
   homemediaforge_net:
-    name: homemediaforge_net
+    name: ${HOMEMEDIAFORGE_NET_NAME:-homemediaforge_net}
     driver: bridge
     ipam:
       config:
-        - subnet: 172.30.0.0/24
+        - subnet: ${HOMEMEDIAFORGE_NET_SUBNET:-172.30.0.0/24}

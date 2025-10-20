@@ -12,12 +12,12 @@ services:
       - ${FILEBROWSER_PORT:-8081}:80
     networks:
       homemediaforge_net:
-        ipv4_address: 172.30.0.13
+        ipv4_address: ${FILEBROWSER_IPV4:-172.30.0.13}
 
 networks:
   homemediaforge_net:
-    name: homemediaforge_net
+    name: ${HOMEMEDIAFORGE_NET_NAME:-homemediaforge_net}
     driver: bridge
     ipam:
       config:
-        - subnet: 172.30.0.0/24
+        - subnet: ${HOMEMEDIAFORGE_NET_SUBNET:-172.30.0.0/24}

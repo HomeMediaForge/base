@@ -26,12 +26,12 @@ services:
       - ${JELLYFIN_DLNA_PORT:-1900}:1900/udp
     networks:
       homemediaforge_net:
-        ipv4_address: 172.30.0.37
+        ipv4_address: ${JELLYFIN_IPV4:-172.30.0.37}
 
 networks:
   homemediaforge_net:
-    name: homemediaforge_net
+    name: ${HOMEMEDIAFORGE_NET_NAME:-homemediaforge_net}
     driver: bridge
     ipam:
       config:
-        - subnet: 172.30.0.0/24
+        - subnet: ${HOMEMEDIAFORGE_NET_SUBNET:-172.30.0.0/24}
