@@ -7,6 +7,8 @@ services:
       - TZ=${TZ}
     volumes:
       - ${STACK_CONFIG_DIR}/jellyseerr:/app/config
+      - ${STACK_MEDIA_ROUTE_TV}:/data/tvshows
+      - ${STACK_MEDIA_ROUTE_MOVIES}:/data/movies
     ports:
       - ${JELLYSEERR_PORT:-5056}:5055
     restart: unless-stopped
