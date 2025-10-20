@@ -1,10 +1,3 @@
-# networks:
-  # backend:
-    # external: true
-    # name: backend_net
-    # driver: bridge
-    # attachable: true
-
 services:
   immich-machine-learning:
     image: ghcr.io/immich-app/immich-machine-learning:release-cuda
@@ -24,6 +17,14 @@ services:
       - TZ=${TZ}
     volumes:
       - ${STACK_CONFIG_DIR}/immich/ml-cache:/cache
+    networks:
+      homemediaforge_net:
+        ipv4_address: 172.30.0.30
 
-    # networks:
-      # - backend
+networks:
+  homemediaforge_net:
+    name: homemediaforge_net
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24

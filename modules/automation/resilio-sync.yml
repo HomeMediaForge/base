@@ -1,9 +1,3 @@
-# networks:
-  # media:
-    # external: true
-    # name: media_net
-    # driver: bridge
-    # attachable: true
 services:
   resilio-sync:
     image: lscr.io/linuxserver/resilio-sync:latest
@@ -21,5 +15,14 @@ services:
       - ${RESILIO_LISTEN_PORT:-55555}:55555
       - ${RESILIO_LISTEN_PORT:-55555}:55555/udp
     restart: unless-stopped
-    # networks:
-      # - media
+    networks:
+      homemediaforge_net:
+        ipv4_address: 172.30.0.22
+
+networks:
+  homemediaforge_net:
+    name: homemediaforge_net
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24

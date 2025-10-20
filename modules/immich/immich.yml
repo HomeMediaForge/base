@@ -1,15 +1,3 @@
-# networks:
-  # media:
-    # external: true
-    # name: media_net
-    # driver: bridge
-    # attachable: true
-  # backend:
-    # external: true
-    # name: backend_net
-    # driver: bridge
-    # attachable: true
-
 services:
   immich:
     image: ghcr.io/immich-app/immich-server:release
@@ -42,6 +30,14 @@ services:
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "2283:2283"
-    # networks:
-      # - backend
-      # - media
+    networks:
+      homemediaforge_net:
+        ipv4_address: 172.30.0.31
+
+networks:
+  homemediaforge_net:
+    name: homemediaforge_net
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24

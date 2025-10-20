@@ -1,10 +1,3 @@
-# networks:
-  # media:
-    # external: true
-    # name: media_net
-    # driver: bridge
-    # attachable: true
-
 services:
   lidarr:
     image: lscr.io/linuxserver/lidarr:latest
@@ -20,5 +13,14 @@ services:
     ports:
       - ${LIDARR_PORT:-8686}:8686
     restart: unless-stopped
-    # networks:
-      # - media
+    networks:
+      homemediaforge_net:
+        ipv4_address: 172.30.0.38
+
+networks:
+  homemediaforge_net:
+    name: homemediaforge_net
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24

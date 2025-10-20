@@ -1,10 +1,3 @@
-# networks:
-  # media:
-    # external: true
-    # name: media_net
-    # driver: bridge
-    # attachable: true
-
 services:
   plex:
     image: lscr.io/linuxserver/plex:latest
@@ -37,5 +30,14 @@ services:
       - 32413:32413/udp
       - 32414:32414/udp
     restart: unless-stopped
-    # networks:
-      # - media
+    networks:
+      homemediaforge_net:
+        ipv4_address: 172.30.0.40
+
+networks:
+  homemediaforge_net:
+    name: homemediaforge_net
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24

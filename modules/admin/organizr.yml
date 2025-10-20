@@ -1,10 +1,3 @@
-# networks:
-  # proxy:
-    # external: true
-    # name: proxy_net
-    # driver: bridge
-    # attachable: true
-
 services:
   organizr:
     image: organizr/organizr
@@ -18,5 +11,14 @@ services:
     ports:
       - 5050:80
     restart: unless-stopped
-    # networks:
-      # - proxy
+    networks:
+      homemediaforge_net:
+        ipv4_address: 172.30.0.15
+
+networks:
+  homemediaforge_net:
+    name: homemediaforge_net
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24

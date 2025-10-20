@@ -1,9 +1,3 @@
-# networks:
-  # backend:
-    # external: true
-    # name: backend_net
-    # driver: bridge
-    # attachable: true
 services:
   database:
     image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
@@ -30,5 +24,14 @@ services:
       timeout: 5s
       retries: 10
     restart: unless-stopped
-    # networks:
-      # - backend
+    networks:
+      homemediaforge_net:
+        ipv4_address: 172.30.0.29
+
+networks:
+  homemediaforge_net:
+    name: homemediaforge_net
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24

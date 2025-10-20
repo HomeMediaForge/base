@@ -1,9 +1,3 @@
-# networks:
-  # media:
-    # external: true
-    # name: media_net
-    # driver: bridge
-    # attachable: true
 services:
   plextraktsync:
     image: ghcr.io/taxel/plextraktsync
@@ -16,5 +10,14 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     restart: unless-stopped
-    # networks:
-      # - media
+    networks:
+      homemediaforge_net:
+        ipv4_address: 172.30.0.20
+
+networks:
+  homemediaforge_net:
+    name: homemediaforge_net
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24

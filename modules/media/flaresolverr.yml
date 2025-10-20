@@ -1,9 +1,3 @@
-# networks:
-  # media:
-    # external: true
-    # name: media_net
-    # driver: bridge
-    # attachable: true
 services:
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
@@ -18,5 +12,14 @@ services:
     ports:
       - ${FLARESOLVERR_PORT:-8191}:8191
     restart: unless-stopped
-    # networks:
-      # - media
+    networks:
+      homemediaforge_net:
+        ipv4_address: 172.30.0.35
+
+networks:
+  homemediaforge_net:
+    name: homemediaforge_net
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24

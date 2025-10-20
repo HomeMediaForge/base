@@ -1,24 +1,10 @@
-# networks:
-  # proxy:
-    # external: true
-    # name: proxy_net
-    # driver: bridge
-    # attachable: true
-  # media:
-    # external: true
-    # name: media_net
-    # driver: bridge
-    # attachable: true
-  # backend:
-    # external: true
-    # name: backend_net
-    # driver: bridge
-    # attachable: true
-  # monitoring:
-    # external: true
-    # name: monitoring_net
-    # driver: bridge
-    # attachable: true
+networks:
+  homemediaforge_net:
+    name: homemediaforge_net
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
 
 include:
   - modules/admin/docker-compose.admin.yml
