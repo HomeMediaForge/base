@@ -1,0 +1,23 @@
+services:
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=${JELLYSEERR_LOG_LEVEL:-info}
+      - TZ=${TZ}
+    volumes:
+      - ${STACK_CONFIG_DIR}/jellyseerr:/app/config
+    ports:
+      - ${JELLYSEERR_PORT:-5056}:5055
+    restart: unless-stopped
+    networks:
+      homemediaforge_net:
+        ipv4_address: ${JELLYSEERR_IPV4:-172.30.0.44}
+
+networks:
+  homemediaforge_net:
+    name: ${HOMEMEDIAFORGE_NET_NAME:-homemediaforge_net}
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${HOMEMEDIAFORGE_NET_SUBNET:-172.30.0.0/24}

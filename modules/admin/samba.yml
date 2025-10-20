@@ -12,14 +12,3 @@ services:
       - ${STACK_CONFIG_DIR}/samba/smb.conf:/etc/samba/smb.conf
       - ${STACK_STORAGE_ROOT_DIR}:/storage
     restart: unless-stopped
-    networks:
-      homemediaforge_net:
-        ipv4_address: ${SAMBA_IPV4:-172.30.0.16}
-
-networks:
-  homemediaforge_net:
-    name: ${HOMEMEDIAFORGE_NET_NAME:-homemediaforge_net}
-    driver: bridge
-    ipam:
-      config:
-        - subnet: ${HOMEMEDIAFORGE_NET_SUBNET:-172.30.0.0/24}
