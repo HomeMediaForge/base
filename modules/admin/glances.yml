@@ -1,9 +1,9 @@
-networks:
-  monitoring:
-    external: true
-    name: monitoring_net
-    driver: bridge
-    attachable: true
+# networks:
+  # monitoring:
+    # external: true
+    # name: monitoring_net
+    # driver: bridge
+    # attachable: true
 
 services:
   glances:
@@ -21,5 +21,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    networks:
-      - monitoring
+    ports:
+      - ${GLANCES_PORT:-61208}:61208
+    # networks:
+      # - monitoring

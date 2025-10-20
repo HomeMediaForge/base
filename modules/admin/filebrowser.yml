@@ -1,9 +1,9 @@
-networks:
-  media:
-    external: true
-    name: media_net
-    driver: bridge
-    attachable: true
+# networks:
+  # media:
+    # external: true
+    # name: media_net
+    # driver: bridge
+    # attachable: true
 
 services:
   filebrowser:
@@ -15,5 +15,7 @@ services:
       - ${STACK_STORAGE_ROOT_DIR}:/srv
       - ${STACK_CONFIG_DIR}/filebrowser/db/filebrowser.db:/database.db
       - ${STACK_CONFIG_DIR}/filebrowser/.filebrowser.json:/filebrowser.json
-    networks:
-      - media
+    ports:
+      - ${FILEBROWSER_PORT:-8081}:80
+    # networks:
+      # - media

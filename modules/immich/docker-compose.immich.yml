@@ -1,14 +1,14 @@
-networks:
-  backend:
-    external: true
-    name: backend_net
-    driver: bridge
-    attachable: true
-  media:
-    external: true
-    name: media_net
-    driver: bridge
-    attachable: true
+# networks:
+  # backend:
+    # external: true
+    # name: backend_net
+    # driver: bridge
+    # attachable: true
+  # media:
+    # external: true
+    # name: media_net
+    # driver: bridge
+    # attachable: true
 
 include:
   - database.yml

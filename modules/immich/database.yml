@@ -1,9 +1,9 @@
-networks:
-  backend:
-    external: true
-    name: backend_net
-    driver: bridge
-    attachable: true
+# networks:
+  # backend:
+    # external: true
+    # name: backend_net
+    # driver: bridge
+    # attachable: true
 services:
   database:
     image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
@@ -30,5 +30,5 @@ services:
       timeout: 5s
       retries: 10
     restart: unless-stopped
-    networks:
-      - backend
+    # networks:
+      # - backend

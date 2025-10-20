@@ -1,9 +1,9 @@
-networks:
-  media:
-    external: true
-    name: media_net
-    driver: bridge
-    attachable: true
+# networks:
+  # media:
+    # external: true
+    # name: media_net
+    # driver: bridge
+    # attachable: true
 
 services:
   bazarr:
@@ -20,6 +20,8 @@ services:
       - ${STACK_MEDIA_ROUTE_CONCERTS}:/concerts
       - ${STACK_MEDIA_ROUTE_ANIME}:/anime
       - ${STACK_MEDIA_ROUTE_ADULT}:/adult
+    ports:
+      - ${BAZARR_PORT:-6767}:6767
     restart: unless-stopped
-    networks:
-      - media
+    # networks:
+      # - media

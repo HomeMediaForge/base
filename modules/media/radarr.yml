@@ -1,9 +1,9 @@
-networks:
-  media:
-    external: true
-    name: media_net
-    driver: bridge
-    attachable: true
+# networks:
+  # media:
+    # external: true
+    # name: media_net
+    # driver: bridge
+    # attachable: true
 
 services:
   radarr:
@@ -18,7 +18,8 @@ services:
       - ${STACK_MEDIA_ROUTE_MOVIES}:/movies
       - ${STACK_MEDIA_ROUTE_CONCERTS}:/concerts
       - ${STACK_DOWNLOADS_DIR_COMPLETED}:/downloads
+    ports:
+      - ${RADARR_PORT:-7878}:7878
     restart: unless-stopped
-    networks:
-      - media
-
+    # networks:
+      # - media

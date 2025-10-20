@@ -1,19 +1,19 @@
-networks:
-  media:
-    external: true
-    name: media_net
-    driver: bridge
-    attachable: true
-  proxy:
-    external: true
-    name: proxy_net
-    driver: bridge
-    attachable: true
-  monitoring:
-    external: true
-    name: monitoring_net
-    driver: bridge
-    attachable: true
+# networks:
+  # media:
+    # external: true
+    # name: media_net
+    # driver: bridge
+    # attachable: true
+  # proxy:
+    # external: true
+    # name: proxy_net
+    # driver: bridge
+    # attachable: true
+  # monitoring:
+    # external: true
+    # name: monitoring_net
+    # driver: bridge
+    # attachable: true
 
 include:
   - filebrowser.yml

@@ -1,9 +1,9 @@
-networks:
-  media:
-    external: true
-    name: media_net
-    driver: bridge
-    attachable: true
+# networks:
+  # media:
+    # external: true
+    # name: media_net
+    # driver: bridge
+    # attachable: true
 
 services:
   sonarr:
@@ -17,6 +17,8 @@ services:
       - ${STACK_CONFIG_DIR}/sonarr:/config
       - ${STACK_MEDIA_ROUTE_TV}:/tv
       - ${STACK_DOWNLOADS_DIR_COMPLETED}:/downloads
+    ports:
+      - ${SONARR_PORT:-8989}:8989
     restart: unless-stopped
-    networks:
-      - media
+    # networks:
+      # - media

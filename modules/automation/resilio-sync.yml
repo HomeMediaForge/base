@@ -1,9 +1,9 @@
-networks:
-  media:
-    external: true
-    name: media_net
-    driver: bridge
-    attachable: true
+# networks:
+  # media:
+    # external: true
+    # name: media_net
+    # driver: bridge
+    # attachable: true
 services:
   resilio-sync:
     image: lscr.io/linuxserver/resilio-sync:latest
@@ -16,6 +16,10 @@ services:
       - ${STACK_CONFIG_DIR}/rslsync:/config
       - ${STACK_FILES_DIR}/Sync_Data:/downloads
       - ${STACK_FILES_DIR}/Sync_Data:/sync
+    ports:
+      - ${RESILIO_WEBUI_PORT:-8888}:8888
+      - ${RESILIO_LISTEN_PORT:-55555}:55555
+      - ${RESILIO_LISTEN_PORT:-55555}:55555/udp
     restart: unless-stopped
-    networks:
-      - media
+    # networks:
+      # - media

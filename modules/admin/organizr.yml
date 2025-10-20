@@ -1,9 +1,9 @@
-networks:
-  proxy:
-    external: true
-    name: proxy_net
-    driver: bridge
-    attachable: true
+# networks:
+  # proxy:
+    # external: true
+    # name: proxy_net
+    # driver: bridge
+    # attachable: true
 
 services:
   organizr:
@@ -18,5 +18,5 @@ services:
     ports:
       - 5050:80
     restart: unless-stopped
-    networks:
-      - proxy
+    # networks:
+      # - proxy

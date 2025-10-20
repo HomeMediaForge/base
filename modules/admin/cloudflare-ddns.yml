@@ -1,9 +1,9 @@
-networks:
-  proxy:
-    external: true
-    name: proxy_net
-    driver: bridge
-    attachable: true
+# networks:
+  # proxy:
+    # external: true
+    # name: proxy_net
+    # driver: bridge
+    # attachable: true
 services:
   cloudflare-ddns:
     image: favonia/cloudflare-ddns:latest
@@ -19,5 +19,5 @@ services:
       - TZ=${TZ}
       - IP6_PROVIDER=none
     restart: unless-stopped
-    networks:
-      - proxy
+    # networks:
+      # - proxy

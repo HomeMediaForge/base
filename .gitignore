@@ -10,7 +10,7 @@
 *.bak
 *.tar
 *.tar.gz
-
+*.code-workspace
 # Archivos temporales
 __pycache__/
 *.log

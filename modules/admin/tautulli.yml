@@ -1,9 +1,9 @@
-networks:
-  media:
-    external: true
-    name: media_net
-    driver: bridge
-    attachable: true
+# networks:
+  # media:
+    # external: true
+    # name: media_net
+    # driver: bridge
+    # attachable: true
 
 services:
   tautulli:
@@ -15,7 +15,9 @@ services:
       - TZ=${TZ}
     volumes:
       - ${STACK_CONFIG_DIR}/tautulli:/config
+    ports:
+      - ${TAUTULLI_PORT:-8181}:8181
     restart: unless-stopped
-    networks:
-      - monitoring
-      - media
+    # networks:
+      # - monitoring
+      # - media

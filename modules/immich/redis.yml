@@ -1,9 +1,9 @@
-networks:
-  backend:
-    external: true
-    name: backend_net
-    driver: bridge
-    attachable: true
+# networks:
+  # backend:
+    # external: true
+    # name: backend_net
+    # driver: bridge
+    # attachable: true
 
 services:
   redis:
@@ -12,5 +12,5 @@ services:
     restart: unless-stopped
     environment:
       - TZ=${TZ}
-    networks:
-      - backend
+    # networks:
+      # - backend

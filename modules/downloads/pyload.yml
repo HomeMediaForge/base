@@ -1,9 +1,9 @@
-networks:
-  media:
-    external: true
-    name: media_net
-    driver: bridge
-    attachable: true
+# networks:
+  # media:
+    # external: true
+    # name: media_net
+    # driver: bridge
+    # attachable: true
 
 services:
   pyload:
@@ -16,6 +16,8 @@ services:
     volumes:
       - ${STACK_CONFIG_DIR}/pyload:/config
       - ${STACK_DOWNLOADS_DIR_COMPLETED}:/downloads
+    ports:
+      - ${PYLOAD_PORT:-8000}:8000
     restart: unless-stopped
-    networks:
-      - media
+    # networks:
+      # - media

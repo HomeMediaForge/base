@@ -1,9 +1,9 @@
-networks:
-  media:
-    external: true
-    name: media_net
-    driver: bridge
-    attachable: true
+# networks:
+  # media:
+    # external: true
+    # name: media_net
+    # driver: bridge
+    # attachable: true
 
 services:
   sabnzbd:
@@ -17,6 +17,9 @@ services:
       - ${STACK_CONFIG_DIR}/sabnzbd:/config
       - ${STACK_DOWNLOADS_DIR_COMPLETED}:/downloads
       - ${STACK_DOWNLOADS_DIR_INCOMPLETED}:/incompleted
+    ports:
+      - ${SABNZBD_HTTP_PORT:-8080}:8080
+      - ${SABNZBD_HTTPS_PORT:-9090}:9090
     restart: unless-stopped
-    networks:
-      - media
+    # networks:
+      # - media

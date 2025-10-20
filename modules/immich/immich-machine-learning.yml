@@ -1,9 +1,9 @@
-networks:
-  backend:
-    external: true
-    name: backend_net
-    driver: bridge
-    attachable: true
+# networks:
+  # backend:
+    # external: true
+    # name: backend_net
+    # driver: bridge
+    # attachable: true
 
 services:
   immich-machine-learning:
@@ -25,5 +25,5 @@ services:
     volumes:
       - ${STACK_CONFIG_DIR}/immich/ml-cache:/cache
 
-    networks:
-      - backend
+    # networks:
+      # - backend

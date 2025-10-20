@@ -1,9 +1,9 @@
-networks:
-  backend:
-    external: true
-    name: backend_net
-    driver: bridge
-    attachable: true
+# networks:
+  # backend:
+    # external: true
+    # name: backend_net
+    # driver: bridge
+    # attachable: true
 services:
   auto-networks:
     image: docker:cli
@@ -23,5 +23,5 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: "no"
-    networks:
-      - backend
+    # networks:
+      # - backend

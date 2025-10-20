@@ -1,9 +1,9 @@
-networks:
-  media:
-    external: true
-    name: media_net
-    driver: bridge
-    attachable: true
+# networks:
+  # media:
+    # external: true
+    # name: media_net
+    # driver: bridge
+    # attachable: true
 
 services:
   qbittorrent:
@@ -19,6 +19,10 @@ services:
       - ${STACK_DOWNLOADS_DIR_COMPLETED}:/downloads
       - ${STACK_DOWNLOADS_DIR_INCOMPLETED}:/incompleted
       - ${STACK_BLACKHOLE_DIR}:/blackhole
+    ports:
+      - ${QBITTORRENT_WEBUI_PORT:-8080}:${WEBUI_PORT:-8080}
+      - ${QBITTORRENT_BT_PORT:-6881}:6881
+      - ${QBITTORRENT_BT_PORT:-6881}:6881/udp
     restart: unless-stopped
-    networks:
-      - media
+    # networks:
+      # - media

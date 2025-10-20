@@ -1,9 +1,9 @@
-networks:
-  media:
-    external: true
-    name: media_net
-    driver: bridge
-    attachable: true
+# networks:
+  # media:
+    # external: true
+    # name: media_net
+    # driver: bridge
+    # attachable: true
 services:
   plextraktsync:
     image: ghcr.io/taxel/plextraktsync
@@ -16,5 +16,5 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     restart: unless-stopped
-    networks:
-      - media
+    # networks:
+      # - media

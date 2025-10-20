@@ -1,9 +1,9 @@
-networks:
-  backend:
-    external: true
-    name: backend_net
-    driver: bridge
-    attachable: true
+# networks:
+  # backend:
+    # external: true
+    # name: backend_net
+    # driver: bridge
+    # attachable: true
 
 services:
   watchtower:
@@ -23,5 +23,5 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-    networks:
-      - backend
+    # networks:
+      # - backend

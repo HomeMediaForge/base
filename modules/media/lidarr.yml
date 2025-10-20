@@ -1,9 +1,9 @@
-networks:
-  media:
-    external: true
-    name: media_net
-    driver: bridge
-    attachable: true
+# networks:
+  # media:
+    # external: true
+    # name: media_net
+    # driver: bridge
+    # attachable: true
 
 services:
   lidarr:
@@ -17,6 +17,8 @@ services:
       - ${STACK_CONFIG_DIR}/lidarr:/config
       - ${STACK_MEDIA_ROUTE_MUSIC}:/music
       - ${STACK_DOWNLOADS_DIR_COMPLETED}:/downloads
+    ports:
+      - ${LIDARR_PORT:-8686}:8686
     restart: unless-stopped
-    networks:
-      - media
+    # networks:
+      # - media

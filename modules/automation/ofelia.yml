@@ -1,9 +1,9 @@
-networks:
-  media:
-    external: true
-    name: media_net
-    driver: bridge
-    attachable: true
+# networks:
+  # media:
+    # external: true
+    # name: media_net
+    # driver: bridge
+    # attachable: true
 
 services:
   ofelia:
@@ -26,5 +26,5 @@ services:
         max-size: "10m" # Tamaño máximo del log (10 MB)
         max-file: "3" # Retiene 3 archivos rotados
     restart: unless-stopped
-    networks:
-      - media
+    # networks:
+      # - media

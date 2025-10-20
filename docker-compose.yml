@@ -1,24 +1,24 @@
-networks:
-  proxy:
-    external: true
-    name: proxy_net
-    driver: bridge
-    attachable: true
-  media:
-    external: true
-    name: media_net
-    driver: bridge
-    attachable: true
-  backend:
-    external: true
-    name: backend_net
-    driver: bridge
-    attachable: true
-  monitoring:
-    external: true
-    name: monitoring_net
-    driver: bridge
-    attachable: true
+# networks:
+  # proxy:
+    # external: true
+    # name: proxy_net
+    # driver: bridge
+    # attachable: true
+  # media:
+    # external: true
+    # name: media_net
+    # driver: bridge
+    # attachable: true
+  # backend:
+    # external: true
+    # name: backend_net
+    # driver: bridge
+    # attachable: true
+  # monitoring:
+    # external: true
+    # name: monitoring_net
+    # driver: bridge
+    # attachable: true
 
 include:
   - modules/admin/docker-compose.admin.yml

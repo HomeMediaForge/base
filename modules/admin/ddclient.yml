@@ -1,9 +1,9 @@
-networks:
-  proxy:
-    external: true
-    name: proxy_net
-    driver: bridge
-    attachable: true
+# networks:
+  # proxy:
+    # external: true
+    # name: proxy_net
+    # driver: bridge
+    # attachable: true
 
 services:
   ddclient:
@@ -16,5 +16,5 @@ services:
     volumes:
       - ${STACK_CONFIG_DIR}/ddclient:/config
     restart: unless-stopped
-    networks:
-      - proxy
+    # networks:
+      # - proxy

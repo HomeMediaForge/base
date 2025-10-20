@@ -1,9 +1,9 @@
-networks:
-  media:
-    external: true
-    name: media_net
-    driver: bridge
-    attachable: true
+# networks:
+  # media:
+    # external: true
+    # name: media_net
+    # driver: bridge
+    # attachable: true
 
 services:
   prowlarr:
@@ -15,6 +15,8 @@ services:
       - TZ=${TZ}
     volumes:
       - ${STACK_CONFIG_DIR}/prowlarr:/config
+    ports:
+      - ${PROWLARR_PORT:-9696}:9696
     restart: unless-stopped
-    networks:
-      - media
+    # networks:
+      # - media

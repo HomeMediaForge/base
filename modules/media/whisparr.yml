@@ -1,9 +1,9 @@
-networks:
-  media:
-    external: true
-    name: media_net
-    driver: bridge
-    attachable: true
+# networks:
+  # media:
+    # external: true
+    # name: media_net
+    # driver: bridge
+    # attachable: true
 
 services:
   whisparr:
@@ -17,6 +17,8 @@ services:
       - ${STACK_CONFIG_DIR}:/config
       - ${STACK_DOWNLOADS_DIR_COMPLETED}:/downloads
       - ${STACK_MEDIA_ROUTE_ADULT}:/movies # Carpeta personalizada para Whisparr
+    ports:
+      - ${WHISPARR_PORT:-6969}:6969
     restart: unless-stopped
-    networks:
-      - media
+    # networks:
+      # - media
