@@ -8,8 +8,7 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
     volumes:
-      - ${STACK_CONFIG_DIR}:/etc/samba/
-      - ${STACK_STORAGE_ROOT_DIR}:/storage
+s      - ${STACK_STORAGE_ROOT_DIR}:/storage
     ports:
       - ${SAMBA_SMB_PORT:-445}:445/tcp
       - ${SAMBA_NETBIOS_SESSION_PORT:-139}:139/tcp
