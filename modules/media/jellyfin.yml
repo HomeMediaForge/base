@@ -3,6 +3,7 @@ services:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
     runtime: nvidia
+    hostname: ${HOSTNAME}
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
