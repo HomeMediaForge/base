@@ -3,8 +3,8 @@ services:
     image: dockurr/samba
     container_name: samba
     environment:
-      - USER=${USER}
-      - PASS=${PASS}
+      - USER=${SMBUSER}
+      - PASS=${SMBPASS}
       - PUID=${PUID}
       - PGID=${PGID}
     volumes:
