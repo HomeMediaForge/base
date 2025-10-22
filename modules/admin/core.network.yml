@@ -28,6 +28,7 @@ services:
       - "--bogus-priv"
       - "--local=/local/"
       - "--expand-hosts"
+      - "--conf-dir=/etc/dnsmasq.d/,*.conf"
       - "--listen-address=0.0.0.0"
       - "--addn-hosts=/etc/dnsmasq.d/99-containers.conf"
       - "--server=1.1.1.1"
@@ -53,12 +54,12 @@ services:
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - ${STACK_CONFIG_DIR}/dnsmasq:/etc/dnsmasq
-      - ${STACK_CONFIG_DIR}/dnsmasq/dnsmasq.template:/etc/dnsmasq/dnsmasq.template:ro
+      - ${STACK_CONFIG_DIR}/dnsmasq:/etc/dnsmasq.d
+      - ${STACK_CONFIG_DIR}/dnsmasq/dnsmasq.template:/etc/dnsmasq.d/dnsmasq.template:ro
     command: >
       -notify-sighup dnsbridge
-      -watch /etc/dnsmasq/dnsmasq.template
-      /etc/dnsmasq/d/99-containers.conf
+      -watch /etc/dnsmasq.d/dnsmasq.template
+      /etc/dnsmasq.d/99-containers.conf
     labels:
       - "hmf.module=network"
       - "hmf.description=Auto-registro de contenedores en DNS"
@@ -94,10 +95,3 @@ services:
     labels:
       - "hmf.module=network"
       - "hmf.description=Responder for Windows NetBIOS/LLMNR discovery"
-
-# ---------------------------------------------------
-# 📡 Volúmenes base
-# ---------------------------------------------------
-volumes:
-  dnsmasq_data:
-  avahi_data:

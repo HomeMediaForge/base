@@ -1,14 +1,14 @@
 # ============================================================
-# 🧩 HomeMediaForge - dnsmasq auto-generated hosts
-# ------------------------------------------------------------
-# This file is rendered automatically by dnswatcher (docker-gen)
+# 🧩 HomeMediaForge - dnsmasq auto-generated hosts (RuntimeContainer)
 # ============================================================
-
-{{ $ip := "" }}
-{{ range $container := where . "State.Running" true }}
-{{ $name := (index $container.Names 0) | trimPrefix "/" }}
-{{ $ip = $container.NetworkSettings.IPAddress }}
-{{ if $ip }}
+{{ $netName := or (env "HOMEMEDIAFORGE_NET_NAME") "homemediaforge_net" }}
+{{ range $container := . }}
+  {{ if $container.State.Running }}
+    {{ $name := trimPrefix "/" $container.Name }}
+    {{ $network := index $container.NetworkSettings.Networks $netName }}
+    {{ $ip := or (and $network $network.IPAddress) $container.IP }}
+    {{ if $ip }}
 address=/{{ $name }}.local/{{ $ip }}
-{{ end }}
+    {{ end }}
+  {{ end }}
 {{ end }}
