@@ -11,7 +11,7 @@ services:
   # 🧠 DNS BRIDGE (dnsmasq)
   # ---------------------------------------------------
   dnsbridge:
-    image: andyshinn/dnsmasq:2.85
+    image: jpillora/dnsmasq:latest
     container_name: dnsbridge
     network_mode: host # Escucha en el host para UDP/TCP 53
     restart: unless-stopped
