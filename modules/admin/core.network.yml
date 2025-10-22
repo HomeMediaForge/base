@@ -82,7 +82,9 @@ services:
   # 💬 LLMNR / NETBIOS RESPONDER (para Windows)
   # ---------------------------------------------------
   nbns:
-    image: ghcr.io/kamailio/nbnsd:latest
+    build:
+      context: /opt/HomeMediaForge/modules/admin
+      dockerfile: responder.Dockerfile
     container_name: nbns
     network_mode: host
     restart: unless-stopped
