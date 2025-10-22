@@ -32,6 +32,7 @@ services:
       - "--addn-hosts=/etc/dnsmasq.d/99-containers.conf"
       - "--server=1.1.1.1"
       - "--server=8.8.8.8"
+      - "--address=/.local/127.0.0.1"
     healthcheck:
       test: ["CMD", "dig", "@127.0.0.1", "localhost"]
       interval: 60s
@@ -56,7 +57,7 @@ services:
     command: >
       -notify-sighup dnsbridge
       -watch /etc/dnsmasq/dnsmasq.template
-      /etc/dnsmasq/d/99-containers.conf
+      /etc/dnsmasq.d/99-containers.conf
     labels:
       - "hmf.module=network"
       - "hmf.description=Auto-registro de contenedores en DNS"
@@ -87,7 +88,7 @@ services:
     container_name: nbns
     network_mode: host
     environment:
-      - NET_IFACE=${NETWORK_INTEFACE:-enp0s3}
+      - NET_IFACE=${NETWORK_INTERFACE:-enp0s3}
     restart: unless-stopped
     labels:
       - "hmf.module=network"
