@@ -2,33 +2,32 @@ services:
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
+    runtime: nvidia
     hostname: ${HOSTNAME}
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+      - NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES}
+      - NVIDIA_DRIVER_CAPABILITIES=${NVIDIA_DRIVER_CAPABILITIES}
+      # Optimiza ffmpeg interno y prioriza NVENC/NVDEC
       - JELLYFIN_FFmpeg__probesize=1G
       - JELLYFIN_FFmpeg__analyzeduration=200M
-      #- JELLYFIN_PublishedServerUrl=${JELLYFIN_PublishedServerUrl}
+      # Public URL opcional (para SWAG o Tailscale)
+      - JELLYFIN_PublishedServerUrl=${JELLYFIN_PublishedServerUrl}
     volumes:
       - ${STACK_CONFIG_DIR}/jellyfin:/config
       - ${STACK_MEDIA_ROUTE_TV}:/data/tvshows
       - ${STACK_MEDIA_ROUTE_MOVIES}:/data/movies
-      - ${STACK_MEDIA_ROUTE_MUSIC}:/data/music
       - ${STACK_MEDIA_TRANSCODE_DIR}:/transcode
     ports:
       - ${JELLYFIN_HTTP_PORT:-8096}:8096
       - ${JELLYFIN_HTTPS_PORT:-8920}:8920
       - ${JELLYFIN_DISCOVERY_PORT:-7359}:7359/udp
       - ${JELLYFIN_DLNA_PORT:-1900}:1900/udp
-    devices:
-      - /dev/dri/renderD128:/dev/dri/renderD128
-    group_add:
-      - "${RENDER_GID}" # o el GID numérico si es requerido
-    restart: unless-stopped
     networks:
       homemediaforge_net:
-        ipv4_address: ${JELLYFIN_IPV4:-172.30.0.45}
+        ipv4_address: ${JELLYFIN_IPV4:-172.30.0.37}
 
 networks:
   homemediaforge_net:
