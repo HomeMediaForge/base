@@ -5,7 +5,7 @@
 FROM alpine:3.20
 
 RUN apk add --no-cache python3 py3-pip && \
-  pip install responder && \
+  pip install --break-system-packages responder && \
   adduser -D -g '' responder
 
 USER responder
