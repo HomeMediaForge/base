@@ -20,6 +20,6 @@ RUN adduser -D -g '' responder
 RUN apk del git gcc musl-dev libffi-dev openssl-dev linux-headers python3-dev
 
 WORKDIR /opt/Responder
-USER responder
+# USER responder
 
 ENTRYPOINT ["python3", "Responder.py", "-I", "eth0", "-w", "Off", "-d", "Off"]
