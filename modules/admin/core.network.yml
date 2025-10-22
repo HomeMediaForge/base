@@ -54,14 +54,11 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ${STACK_CONFIG_DIR}/dnsmasq:/etc/dnsmasq
+      - ${STACK_CONFIG_DIR}/dnsmasq/dnsmasq.template:/etc/dnsmasq/dnsmasq.template:ro
     command: >
       -notify-sighup dnsbridge
       -watch /etc/dnsmasq/dnsmasq.template
-      /etc/dnsmasq.d/99-containers.conf
-    labels:
-      - "hmf.module=network"
-      - "hmf.description=Auto-registro de contenedores en DNS"
-
+      /etc/dnsmasq/d/99-containers.conf
   # ---------------------------------------------------
   # 📣 mDNS REFLECTOR / AVAHI
   # ---------------------------------------------------

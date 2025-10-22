@@ -1,11 +1,14 @@
-# ======================================================
-# Autogenerado por docker-gen
-# Registra cada contenedor activo como nombre.local
-# ======================================================
-{% for container in containers %}
-{% if container.State.Running %}
-{% for net, data in container.NetworkSettings.Networks %}
-address=/{{ container.Name }}.local/{{ data.IPAddress }}
-{% endfor %}
-{% endif %}
-{% endfor %}
+# ============================================================
+# 🧩 HomeMediaForge - dnsmasq auto-generated hosts
+# ------------------------------------------------------------
+# This file is rendered automatically by dnswatcher (docker-gen)
+# ============================================================
+
+{{ $ip := "" }}
+{{ range $container := where . "State.Running" true }}
+{{ $name := (index $container.Names 0) | trimPrefix "/" }}
+{{ $ip = $container.NetworkSettings.IPAddress }}
+{{ if $ip }}
+address=/{{ $name }}.local/{{ $ip }}
+{{ end }}
+{{ end }}
