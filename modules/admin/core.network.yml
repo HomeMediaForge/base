@@ -103,56 +103,48 @@ services:
   # ---------------------------------------------------
   # 🚦 TRAEFIK LOCAL PROXY (con certificados autofirmados)
   # ---------------------------------------------------
-traefik:
-  image: traefik:${TRAEFIK_VERSION:-v3.1}
-  container_name: traefik
-  hostname: traefik
-  network_mode: host
-  restart: unless-stopped
-  environment:
-    TZ: ${TZ:-America/Santiago}
-  volumes:
-    - /var/run/docker.sock:/var/run/docker.sock:ro
-    - ${STACK_CONFIG_DIR}/traefik:/etc/traefik
-    - ${STACK_CONFIG_DIR}/traefik/certs:/certs
-    - ${STACK_CONFIG_DIR}/traefik/dynamic:/etc/traefik/dynamic
-  command:
-    # 🧠 Proveedores
-    - "--providers.docker=true"
-    - "--providers.docker.watch=true"
-    - "--providers.docker.exposedbydefault=false"
-    - "--providers.docker.useBindPortIP=${TRAEFIK_USE_BIND_PORT_IP:-true}"
-    - "--providers.file.directory=/etc/traefik/dynamic"
-    - "--providers.file.watch=true"
-
-    # 🌐 Entrypoints
-    - "--entrypoints.http.address=:${TRAEFIK_HTTP_PORT:-80}"
-    - "--entrypoints.https.address=:${TRAEFIK_HTTPS_PORT:-443}"
-
-    # 🔁 Redirección HTTP → HTTPS
-    - "--entrypoints.http.http.redirections.entrypoint.to=https"
-    - "--entrypoints.http.http.redirections.entrypoint.scheme=https"
-
-    # 🔒 Habilitar TLS en HTTPS
-    - "--entrypoints.https.http.tls=true"
-
-    # 🧰 Dashboard y ping
-    - "--api.dashboard=${TRAEFIK_API_DASHBOARD:-true}"
-    - "--ping=true"
-    - "--ping.entryPoint=http"
-
-    # 🪵 Logging
-    - "--log.level=${TRAEFIK_LOG_LEVEL:-INFO}"
-
-    # ⚙️ Seguridad y certificados
-    - "--serversTransport.insecureSkipVerify=${TRAEFIK_INSECURE_SKIP_VERIFY:-true}"
-
-  healthcheck:
-    test: ["CMD", "traefik", "healthcheck", "--ping"]
-    interval: 30s
-    timeout: 5s
-    retries: 3
-
-  labels:
-    - "hmf.module=network"
-    - "hmf.description=Reverse proxy HTTPS autofirmado"
+  traefik:
+    image: traefik:${TRAEFIK_VERSION:-v3.1}
+    container_name: traefik
+    hostname: traefik
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-America/Santiago}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${STACK_CONFIG_DIR}/traefik:/etc/traefik
+      - ${STACK_CONFIG_DIR}/traefik/certs:/certs
+      - ${STACK_CONFIG_DIR}/traefik/dynamic:/etc/traefik/dynamic
+    command:
+      # 🧠 Proveedores
+      - "--providers.docker=true"
+      - "--providers.docker.watch=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.useBindPortIP=${TRAEFIK_USE_BIND_PORT_IP:-true}"
+      - "--providers.file.directory=/etc/traefik/dynamic"
+      - "--providers.file.watch=true"
+      # 🌐 Entrypoints
+      - "--entrypoints.http.address=:${TRAEFIK_HTTP_PORT:-80}"
+      - "--entrypoints.https.address=:${TRAEFIK_HTTPS_PORT:-443}"
+      # 🔁 Redirección HTTP → HTTPS
+      - "--entrypoints.http.http.redirections.entrypoint.to=https"
+      - "--entrypoints.http.http.redirections.entrypoint.scheme=https"
+      # 🔒 Habilitar TLS en HTTPS
+      - "--entrypoints.https.http.tls=true"
+      # 🧰 Dashboard y ping
+      - "--api.dashboard=${TRAEFIK_API_DASHBOARD:-true}"
+      - "--ping=true"
+      - "--ping.entryPoint=http"
+      # 🪵 Logging
+      - "--log.level=${TRAEFIK_LOG_LEVEL:-INFO}"
+      # ⚙️ Seguridad y certificados
+      - "--serversTransport.insecureSkipVerify=${TRAEFIK_INSECURE_SKIP_VERIFY:-true}"
+    healthcheck:
+      test: ["CMD", "traefik", "healthcheck", "--ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    labels:
+      - "hmf.module=network"
+      - "hmf.description=Reverse proxy HTTPS autofirmado"
