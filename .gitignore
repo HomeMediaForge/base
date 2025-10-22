@@ -23,3 +23,7 @@ __pycache__/
 .DS_Store
 Thumbs.db
 docker-compose.yml
+
+# Siempre permitir el archivo de plantilla de configuración.
+!config-template/
+!config-template/**

@@ -95,3 +95,29 @@ services:
     labels:
       - "hmf.module=network"
       - "hmf.description=Responder for Windows NetBIOS/LLMNR discovery"
+
+  # ---------------------------------------------------
+  # 🚦 TRAEFIK LOCAL PROXY (con certificados autofirmados)
+  # ---------------------------------------------------
+  traefik:
+    image: traefik:v3.1
+    container_name: traefik
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${STACK_CONFIG_DIR}/traefik:/etc/traefik
+      - ${STACK_CONFIG_DIR}/traefik/certs:/certs
+    command:
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.http.address=:80"
+      - "--entrypoints.https.address=:443"
+      - "--serversTransport.insecureSkipVerify=true"
+      - "--entrypoints.https.http.tls.certificates.certFile=/certs/hmf.crt"
+      - "--entrypoints.https.http.tls.certificates.keyFile=/certs/hmf.key"
+      - "--log.level=INFO"
+    labels:
+      - "hmf.module=network"
+      - "hmf.description=Reverse proxy HTTPS autofirmado"
