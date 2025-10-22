@@ -86,6 +86,8 @@ services:
       dockerfile: responder.Dockerfile
     container_name: nbns
     network_mode: host
+    environment:
+      - NET_IFACE=${NETWORK_INTEFACE:-enp3s0}
     restart: unless-stopped
     labels:
       - "hmf.module=network"

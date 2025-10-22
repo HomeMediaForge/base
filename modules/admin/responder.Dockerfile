@@ -13,13 +13,13 @@ RUN git clone https://github.com/lgandx/Responder.git /opt/Responder
 # 3️⃣ Instalar dependencias requeridas
 RUN pip install --break-system-packages netifaces aioquic
 
-# 4️⃣ Crear usuario sin privilegios
-RUN adduser -D -g '' responder
-
-# 5️⃣ (Opcional) limpiar compiladores y cabeceras
+# 4️⃣ (Opcional) limpiar compiladores
 RUN apk del git gcc musl-dev libffi-dev openssl-dev linux-headers python3-dev
 
 WORKDIR /opt/Responder
-# USER responder
 
-ENTRYPOINT ["python3", "Responder.py", "-I", "eth0", "-w", "Off", "-d", "Off"]
+# 5️⃣ Permitir interfaz variable (pasada por env)
+ENV NET_IFACE=enp3s0
+
+# 6️⃣ Ejecutar como root, usando interfaz dinámica
+ENTRYPOINT ["sh", "-c", "python3 Responder.py -I ${NET_IFACE} -w Off -d Off"]
