@@ -87,7 +87,7 @@ services:
     container_name: nbns
     network_mode: host
     environment:
-      - NET_IFACE=${NETWORK_INTEFACE:-enp3s0}
+      - NET_IFACE=${NETWORK_INTEFACE:-enp0s3}
     restart: unless-stopped
     labels:
       - "hmf.module=network"
