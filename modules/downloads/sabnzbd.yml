@@ -16,6 +16,8 @@ services:
       - "traefik.http.routers.sabnzbd.rule=Host(`${SABNZBD_TRAEFIK_HOST:-sabnzbd}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.sabnzbd.entrypoints=https"
       - "traefik.http.services.sabnzbd.loadbalancer.server.port=8080"
+    depends_on:
+      - traefik
     ports:
       - ${SABNZBD_HTTP_PORT:-8080}:8080
       - ${SABNZBD_HTTPS_PORT:-9090}:9090

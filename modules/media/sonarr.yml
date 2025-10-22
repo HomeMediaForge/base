@@ -16,6 +16,8 @@ services:
       - "traefik.http.routers.sonarr.rule=Host(`${SONARR_TRAEFIK_HOST:-sonarr}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.sonarr.entrypoints=https"
       - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
+    depends_on:
+      - traefik
     ports:
       - ${SONARR_PORT:-8989}:8989
     restart: unless-stopped

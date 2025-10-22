@@ -16,6 +16,8 @@ services:
       - "traefik.http.routers.resilio-sync.rule=Host(`${RESILIO_SYNC_TRAEFIK_HOST:-resilio-sync}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.resilio-sync.entrypoints=https"
       - "traefik.http.services.resilio-sync.loadbalancer.server.port=8888"
+    depends_on:
+      - traefik
     ports:
       - ${RESILIO_WEBUI_PORT:-8888}:8888
       - ${RESILIO_LISTEN_PORT:-55555}:55555

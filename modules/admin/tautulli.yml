@@ -14,6 +14,8 @@ services:
       - "traefik.http.routers.tautulli.rule=Host(`${TAUTULLI_TRAEFIK_HOST:-tautulli}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.tautulli.entrypoints=https"
       - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
+    depends_on:
+      - traefik
     ports:
       - ${TAUTULLI_PORT:-8181}:8181
     restart: unless-stopped

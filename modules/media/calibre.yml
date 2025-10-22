@@ -20,6 +20,8 @@ services:
       - "traefik.http.routers.calibre.rule=Host(`${CALIBRE_TRAEFIK_HOST:-calibre}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.calibre.entrypoints=https"
       - "traefik.http.services.calibre.loadbalancer.server.port=8080"
+    depends_on:
+      - traefik
     ports:
       - 8080:8080
       - 8181:8181

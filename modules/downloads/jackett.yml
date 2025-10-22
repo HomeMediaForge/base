@@ -16,6 +16,8 @@ services:
       - "traefik.http.routers.jackett.rule=Host(`${JACKETT_TRAEFIK_HOST:-jackett}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.jackett.entrypoints=https"
       - "traefik.http.services.jackett.loadbalancer.server.port=9117"
+    depends_on:
+      - traefik
     ports:
       - ${JACKETT_PORT:-9117}:9117
     restart: unless-stopped

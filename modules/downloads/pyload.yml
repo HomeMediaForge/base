@@ -15,6 +15,8 @@ services:
       - "traefik.http.routers.pyload.rule=Host(`${PYLOAD_TRAEFIK_HOST:-pyload}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.pyload.entrypoints=https"
       - "traefik.http.services.pyload.loadbalancer.server.port=8000"
+    depends_on:
+      - traefik
     ports:
       - ${PYLOAD_PORT:-8000}:8000
     restart: unless-stopped

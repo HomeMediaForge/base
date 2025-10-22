@@ -30,6 +30,8 @@ services:
       - "traefik.http.routers.jellyfin.rule=Host(`${JELLYFIN_TRAEFIK_HOST:-jellyfin}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.jellyfin.entrypoints=https"
       - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
+    depends_on:
+      - traefik
     networks:
       homemediaforge_net:
         ipv4_address: ${JELLYFIN_IPV4:-172.30.0.37}

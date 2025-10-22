@@ -14,6 +14,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+      traefik:
+        condition: service_started
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

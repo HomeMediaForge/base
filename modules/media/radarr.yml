@@ -17,6 +17,8 @@ services:
       - "traefik.http.routers.radarr.rule=Host(`${RADARR_TRAEFIK_HOST:-radarr}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.radarr.entrypoints=https"
       - "traefik.http.services.radarr.loadbalancer.server.port=7878"
+    depends_on:
+      - traefik
     ports:
       - ${RADARR_PORT:-7878}:7878
     restart: unless-stopped

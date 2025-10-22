@@ -24,6 +24,8 @@ services:
       - "traefik.http.routers.swag.entrypoints=https"
       - "traefik.http.services.swag.loadbalancer.server.port=443"
       - "traefik.http.services.swag.loadbalancer.server.scheme=${SWAG_TRAEFIK_SCHEME:-https}"
+    depends_on:
+      - traefik
     ports:
       - 443:443
       - 80:80
