@@ -1,43 +1,25 @@
 # ======================================================
 # 🧩 HomeMediaForge NBNS / LLMNR Responder (Windows Discovery)
-# Basado en Alpine + Python 3 + Responder (LGandx)
 # ======================================================
-
-# Imagen base ligera
 FROM alpine:3.20
 
-# ------------------------------------------------------
-# 1️⃣ Instalar dependencias necesarias para Python y compilación mínima
-# ------------------------------------------------------
+# 1️⃣ Dependencias de compilación + Python
 RUN apk add --no-cache \
-  python3 py3-pip git bash gcc musl-dev libffi-dev openssl-dev
+  python3 py3-pip git bash gcc musl-dev libffi-dev openssl-dev linux-headers
 
-# ------------------------------------------------------
-# 2️⃣ Clonar el verdadero Responder desde GitHub (LGandx)
-# ------------------------------------------------------
+# 2️⃣ Clonar el Responder oficial
 RUN git clone https://github.com/lgandx/Responder.git /opt/Responder
 
-# ------------------------------------------------------
-# 3️⃣ Crear usuario no-root por seguridad
-# ------------------------------------------------------
+# 3️⃣ Instalar dependencia requerida
+RUN pip install netifaces
+
+# 4️⃣ Crear usuario sin privilegios
 RUN adduser -D -g '' responder
 
-# ------------------------------------------------------
-# 4️⃣ (Opcional) Limpiar compiladores y paquetes pesados para reducir tamaño
-# ------------------------------------------------------
-RUN apk del git gcc musl-dev libffi-dev openssl-dev
+# 5️⃣ (Opcional) limpiar compiladores después de instalar netifaces
+RUN apk del git gcc musl-dev libffi-dev openssl-dev linux-headers
 
-# ------------------------------------------------------
-# 5️⃣ Directorio de trabajo
-# ------------------------------------------------------
 WORKDIR /opt/Responder
-
-# ------------------------------------------------------
-# 6️⃣ Ejecutar como usuario sin privilegios
-# ------------------------------------------------------
 USER responder
 
-# ------------------------------------------------------
-# 7️⃣ Comando por defecto: iniciar Responder escuchando en eth0
-# ------------------------------------------------------
 ENTRYPOINT ["python3", "Responder.py", "-I", "eth0", "-w", "Off", "-r", "Off", "-d", "Off"]
