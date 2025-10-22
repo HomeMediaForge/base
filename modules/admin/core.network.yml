@@ -82,7 +82,7 @@ services:
   # 💬 LLMNR / NETBIOS RESPONDER (para Windows)
   # ---------------------------------------------------
   nbns:
-    image: ghcr.io/xyproto/responder
+    image: ghcr.io/kamailio/nbnsd:latest
     container_name: nbns
     network_mode: host
     restart: unless-stopped

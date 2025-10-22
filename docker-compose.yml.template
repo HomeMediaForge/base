@@ -8,7 +8,7 @@ networks:
 
 include:
   - modules/admin/core.network.yml  # NO DESACTIVAR
-  #- modules/admin/auto-networks.yml #Desactivado por defecto
+  #- modules/admin/auto-networks.yml # Desactivado por defecto
   - modules/admin/cloudflare-ddns.yml
   - modules/admin/ddclient.yml
   - modules/admin/filebrowser.yml
@@ -34,8 +34,8 @@ include:
   - modules/media/bazarr.yml
   - modules/media/calibre.yml
   - modules/media/flaresolverr.yml
-  - modules/media/jellyfin-intel.yml
-  - modules/media/jellyfin.yml
+  #- modules/media/jellyfin-intel.yml  # Activar en para usar GPU intel 
+  - modules/media/jellyfin.yml         # Desactivar si se activa otra variante
   - modules/media/jellyseerr.yml
   - modules/media/lidarr.yml
   - modules/media/overseerr.yml
