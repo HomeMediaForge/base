@@ -65,7 +65,7 @@ services:
   # 📣 mDNS REFLECTOR / AVAHI
   # ---------------------------------------------------
   avahi:
-    image: ghcr.io/linuxserver/avahi
+    image: lscr.io/linuxserver/avahi
     container_name: avahi
     network_mode: host
     restart: unless-stopped
