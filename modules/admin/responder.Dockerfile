@@ -11,7 +11,7 @@ RUN apk add --no-cache \
 RUN git clone https://github.com/lgandx/Responder.git /opt/Responder
 
 # 3️⃣ Instalar dependencia requerida
-RUN pip install netifaces
+RUN pip install --break-system-packages  netifaces
 
 # 4️⃣ Crear usuario sin privilegios
 RUN adduser -D -g '' responder
