@@ -65,15 +65,14 @@ services:
   # 📣 mDNS REFLECTOR / AVAHI
   # ---------------------------------------------------
   avahi:
-    image: lscr.io/linuxserver/avahi
+    build:
+      context: /opt/HomeMediaForge/modules/admin
+      dockerfile: avahi.Dockerfile
     container_name: avahi
     network_mode: host
     restart: unless-stopped
-    environment:
-      - TZ=${TZ:-America/Santiago}
-      - SERVICE_NAMES=media.local,traefik.local,plex.local
     volumes:
-      - ${STACK_CONFIG_DIR}/avahi:/config
+      - ${STACK_CONFIG_DIR}/avahi:/etc/avahi/services
     labels:
       - "hmf.module=network"
       - "hmf.description=Multicast DNS reflector for local discovery"
