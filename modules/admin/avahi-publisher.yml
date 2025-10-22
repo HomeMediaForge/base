@@ -1,9 +1,0 @@
-services:
-  avahi-publisher:
-    image: christian-korneck/avahi-publisher:latest
-    container_name: avahi-publisher
-    network_mode: host
-    volumes:
-      - /var/run/dbus:/var/run/dbus
-      - ${STACK_CONFIG_DIR}/avahi-publisher:/etc/avahi/services
-    restart: unless-stopped

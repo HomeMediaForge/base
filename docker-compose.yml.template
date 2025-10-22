@@ -7,7 +7,8 @@ networks:
         - subnet: ${HOMEMEDIAFORGE_NET_SUBNET:-172.30.0.0/24}
 
 include:
-  - modules/admin/auto-networks.yml
+  - modules/admin/core.network.yml  # NO DESACTIVAR
+  #- modules/admin/auto-networks.yml #Desactivado por defecto
   - modules/admin/cloudflare-ddns.yml
   - modules/admin/ddclient.yml
   - modules/admin/filebrowser.yml

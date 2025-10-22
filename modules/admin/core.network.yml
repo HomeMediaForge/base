@@ -1,0 +1,98 @@
+# ===================================================================
+# 🌐 HOME MEDIA FORGE - NETWORK CORE MODULE
+# ---------------------------------------------------
+# Este módulo crea un “bridge DNS interno” y servicios
+# de descubrimiento mDNS/LLMNR para resolver *.local
+# en Windows, Linux y macOS sin modificar el router.
+# ===================================================================
+
+services:
+  # ---------------------------------------------------
+  # 🧠 DNS BRIDGE (dnsmasq)
+  # ---------------------------------------------------
+  dnsbridge:
+    image: andyshinn/dnsmasq:2.85
+    container_name: dnsbridge
+    network_mode: host # Escucha en el host para UDP/TCP 53
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    environment:
+      TZ: ${TZ:-America/Santiago}
+    volumes:
+      - ${STACK_CONFIG_DIR}/dnsmasq:/etc/dnsmasq.d
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command:
+      - "--no-resolv"
+      - "--domain-needed"
+      - "--bogus-priv"
+      - "--local=/local/"
+      - "--expand-hosts"
+      - "--listen-address=0.0.0.0"
+      - "--addn-hosts=/etc/dnsmasq.d/99-containers.conf"
+      - "--server=1.1.1.1"
+      - "--server=8.8.8.8"
+    healthcheck:
+      test: ["CMD", "dig", "@127.0.0.1", "localhost"]
+      interval: 60s
+      timeout: 5s
+      retries: 3
+    labels:
+      - "hmf.module=network"
+      - "hmf.description=Internal DNS bridge for .local resolution"
+
+  # ---------------------------------------------------
+  # 🧩 DOCKER SERVICE WATCHER
+  # ---------------------------------------------------
+  dnswatcher:
+    image: jwilder/docker-gen
+    container_name: dnswatcher
+    depends_on:
+      - dnsbridge
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ${STACK_CONFIG_DIR}/dnsmasq:/etc/dnsmasq
+    command: >
+      -notify-sighup dnsbridge
+      -watch /etc/dnsmasq/dnsmasq.template
+      /etc/dnsmasq/d/99-containers.conf
+    labels:
+      - "hmf.module=network"
+      - "hmf.description=Auto-registro de contenedores en DNS"
+
+  # ---------------------------------------------------
+  # 📣 mDNS REFLECTOR / AVAHI
+  # ---------------------------------------------------
+  avahi:
+    image: ghcr.io/linuxserver/avahi
+    container_name: avahi
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      - TZ=${TZ:-America/Santiago}
+      - SERVICE_NAMES=media.local,traefik.local,plex.local
+    volumes:
+      - ${STACK_CONFIG_DIR}/avahi:/config
+    labels:
+      - "hmf.module=network"
+      - "hmf.description=Multicast DNS reflector for local discovery"
+
+  # ---------------------------------------------------
+  # 💬 LLMNR / NETBIOS RESPONDER (para Windows)
+  # ---------------------------------------------------
+  nbns:
+    image: ghcr.io/xyproto/responder
+    container_name: nbns
+    network_mode: host
+    restart: unless-stopped
+    labels:
+      - "hmf.module=network"
+      - "hmf.description=Responder for Windows NetBIOS/LLMNR discovery"
+
+# ---------------------------------------------------
+# 📡 Volúmenes base
+# ---------------------------------------------------
+volumes:
+  dnsmasq_data:
+  avahi_data:
