@@ -2,6 +2,7 @@ services:
   swag:
     image: lscr.io/linuxserver/swag
     container_name: swag
+    hostname: swag
     cap_add:
       - NET_ADMIN
     environment:
@@ -17,6 +18,12 @@ services:
       - PROPAGATION=${PROPAGATION}
     volumes:
       - ${STACK_CONFIG_DIR}/swag:/config
+    labels:
+      - "traefik.enable=${SWAG_TRAEFIK_ENABLE:-false}"
+      - "traefik.http.routers.swag.rule=Host(`${SWAG_TRAEFIK_HOST:-swag}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.swag.entrypoints=https"
+      - "traefik.http.services.swag.loadbalancer.server.port=443"
+      - "traefik.http.services.swag.loadbalancer.server.scheme=${SWAG_TRAEFIK_SCHEME:-https}"
     ports:
       - 443:443
       - 80:80

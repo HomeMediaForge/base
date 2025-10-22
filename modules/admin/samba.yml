@@ -2,6 +2,7 @@ services:
   samba:
     image: dockurr/samba
     container_name: samba
+    hostname: samba
     environment:
       - USER=${SMBUSER}
       - PASS=${SMBPASS}

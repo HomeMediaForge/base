@@ -2,6 +2,7 @@ services:
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
     container_name: jellyseerr
+    hostname: jellyseerr
     environment:
       - LOG_LEVEL=${JELLYSEERR_LOG_LEVEL:-info}
       - TZ=${TZ}
@@ -9,6 +10,11 @@ services:
       - ${STACK_CONFIG_DIR}/jellyseerr:/app/config
       - ${STACK_MEDIA_ROUTE_TV}:/data/tvshows
       - ${STACK_MEDIA_ROUTE_MOVIES}:/data/movies
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jellyseerr.rule=Host(`${JELLYSEERR_TRAEFIK_HOST:-jellyseerr}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.jellyseerr.entrypoints=https"
+      - "traefik.http.services.jellyseerr.loadbalancer.server.port=5055"
     ports:
       - ${JELLYSEERR_PORT:-5056}:5055
     restart: unless-stopped

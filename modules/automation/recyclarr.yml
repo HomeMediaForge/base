@@ -2,6 +2,7 @@ services:
   recyclarr:
     image: ghcr.io/recyclarr/recyclarr:latest
     container_name: recyclarr
+    hostname: recyclarr
     volumes:
       - ${STACK_CONFIG_DIR}/recyclarr:/config
     environment:

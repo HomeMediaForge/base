@@ -2,6 +2,7 @@ services:
   immich:
     image: ghcr.io/immich-app/immich-server:release
     container_name: immich
+    hostname: immich
     deploy:
       resources:
         reservations:
@@ -28,6 +29,11 @@ services:
     volumes:
       - ${STACK_MEDIA_ROUTE_PHOTOS}:/data
       - /etc/localtime:/etc/localtime:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.immich.rule=Host(`${IMMICH_TRAEFIK_HOST:-immich}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.immich.entrypoints=https"
+      - "traefik.http.services.immich.loadbalancer.server.port=2283"
     ports:
       - "2283:2283"
     networks:

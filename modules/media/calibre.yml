@@ -2,6 +2,7 @@ services:
   calibre:
     image: lscr.io/linuxserver/calibre:latest
     container_name: calibre
+    hostname: calibre
     security_opt:
       - seccomp:unconfined # optional
     environment:
@@ -14,6 +15,11 @@ services:
       - ${STACK_MEDIA_ROUTE_EBOOKS}:/ebooks        # Ruta a la librería de ebooks
       - ${STACK_EBOOKS_IMPORT_DIR}:/ebooks-import  #Capeta para importar ebooks automáticamente a la librería.
     restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.calibre.rule=Host(`${CALIBRE_TRAEFIK_HOST:-calibre}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.calibre.entrypoints=https"
+      - "traefik.http.services.calibre.loadbalancer.server.port=8080"
     ports:
       - 8080:8080
       - 8181:8181

@@ -2,12 +2,18 @@ services:
   tautulli:
     image: lscr.io/linuxserver/tautulli:latest
     container_name: tautulli
+    hostname: tautulli
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
       - ${STACK_CONFIG_DIR}/tautulli:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tautulli.rule=Host(`${TAUTULLI_TRAEFIK_HOST:-tautulli}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.tautulli.entrypoints=https"
+      - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
     ports:
       - ${TAUTULLI_PORT:-8181}:8181
     restart: unless-stopped

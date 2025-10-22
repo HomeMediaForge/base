@@ -2,6 +2,7 @@ services:
   ddclient:
     image: lscr.io/linuxserver/ddclient:latest
     container_name: ddclient
+    hostname: ddclient
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

@@ -2,6 +2,7 @@ services:
   pyload:
     image: lscr.io/linuxserver/pyload-ng:latest
     container_name: pyload
+    hostname: pyload
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -9,6 +10,11 @@ services:
     volumes:
       - ${STACK_CONFIG_DIR}/pyload:/config
       - ${STACK_DOWNLOADS_DIR_COMPLETED}:/downloads
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pyload.rule=Host(`${PYLOAD_TRAEFIK_HOST:-pyload}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.pyload.entrypoints=https"
+      - "traefik.http.services.pyload.loadbalancer.server.port=8000"
     ports:
       - ${PYLOAD_PORT:-8000}:8000
     restart: unless-stopped

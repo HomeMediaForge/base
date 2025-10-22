@@ -2,14 +2,20 @@ services:
   whisparr:
     image: ghcr.io/thespad/whisparr:latest
     container_name: whisparr
+    hostname: whisparr
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${STACK_CONFIG_DIR}:/config
+      - ${STACK_CONFIG_DIR}/whishparr:/config
       - ${STACK_DOWNLOADS_DIR_COMPLETED}:/downloads
       - ${STACK_MEDIA_ROUTE_ADULT}:/movies # Carpeta personalizada para Whisparr
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whisparr.rule=Host(`${WHISPARR_TRAEFIK_HOST:-whisparr}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.whisparr.entrypoints=https"
+      - "traefik.http.services.whisparr.loadbalancer.server.port=6969"
     ports:
       - ${WHISPARR_PORT:-6969}:6969
     restart: unless-stopped

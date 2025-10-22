@@ -19,6 +19,11 @@ services:
       - ${STACK_MEDIA_ROUTE_MUSIC}:/music
       - ${STACK_MEDIA_ROUTE_CONCERTS}:/concerts
       - ${STACK_MEDIA_TRANSCODE_DIR}:/transcode
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.plex.rule=Host(`${PLEX_TRAEFIK_HOST:-plex}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.plex.entrypoints=https"
+      - "traefik.http.services.plex.loadbalancer.server.port=32400"
     ports:
       - ${PLEX_PORT:-32400}:32400/tcp
       - 3005:3005/tcp

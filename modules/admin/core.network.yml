@@ -13,6 +13,7 @@ services:
   dnsbridge:
     image: jpillora/dnsmasq:latest
     container_name: dnsbridge
+    hostname: dnsbridge
     network_mode: host # Escucha en el host para UDP/TCP 53
     restart: unless-stopped
     cap_add:
@@ -49,6 +50,7 @@ services:
   dnswatcher:
     image: jwilder/docker-gen
     container_name: dnswatcher
+    hostname: dnswatcher
     depends_on:
       - dnsbridge
     restart: unless-stopped
@@ -72,6 +74,7 @@ services:
       context: /opt/HomeMediaForge/modules/admin
       dockerfile: avahi.Dockerfile
     container_name: avahi
+    hostname: avahi
     network_mode: host
     restart: unless-stopped
     volumes:
@@ -88,6 +91,7 @@ services:
       context: /opt/HomeMediaForge/modules/admin
       dockerfile: responder.Dockerfile
     container_name: nbns
+    hostname: nbns
     network_mode: host
     environment:
       - NET_IFACE=${NETWORK_INTERFACE:-enp0s3}
@@ -100,24 +104,38 @@ services:
   # 🚦 TRAEFIK LOCAL PROXY (con certificados autofirmados)
   # ---------------------------------------------------
   traefik:
-    image: traefik:v3.1
+    image: traefik:${TRAEFIK_VERSION:-v3.1}
     container_name: traefik
+    hostname: traefik
     network_mode: host
     restart: unless-stopped
+    environment:
+      TZ: ${TZ:-America/Santiago}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${STACK_CONFIG_DIR}/traefik:/etc/traefik
       - ${STACK_CONFIG_DIR}/traefik/certs:/certs
     command:
-      - "--api.dashboard=true"
+      - "--api.dashboard=${TRAEFIK_API_DASHBOARD:-true}"
       - "--providers.docker=true"
+      - "--providers.docker.watch=true"
       - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.http.address=:80"
-      - "--entrypoints.https.address=:443"
-      - "--serversTransport.insecureSkipVerify=true"
-      - "--entrypoints.https.http.tls.certificates.certFile=/certs/hmf.crt"
-      - "--entrypoints.https.http.tls.certificates.keyFile=/certs/hmf.key"
-      - "--log.level=INFO"
+      - "--providers.docker.useBindPortIP=${TRAEFIK_USE_BIND_PORT_IP:-true}"
+      - "--entrypoints.http.address=:${TRAEFIK_HTTP_PORT:-80}"
+      - "--entrypoints.https.address=:${TRAEFIK_HTTPS_PORT:-443}"
+      - "--entrypoints.http.http.redirections.entryPoint.to=https"
+      - "--entrypoints.http.http.redirections.entryPoint.scheme=https"
+      - "--entrypoints.https.http.tls.certificates.certFile=${TRAEFIK_CERT_FILE:-/certs/hmf.crt}"
+      - "--entrypoints.https.http.tls.certificates.keyFile=${TRAEFIK_KEY_FILE:-/certs/hmf.key}"
+      - "--log.level=${TRAEFIK_LOG_LEVEL:-INFO}"
+      - "--serversTransport.insecureSkipVerify=${TRAEFIK_INSECURE_SKIP_VERIFY:-true}"
+      - "--ping=true"
+      - "--ping.entryPoint=http"
+    healthcheck:
+      test: ["CMD", "traefik", "healthcheck", "--ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
     labels:
       - "hmf.module=network"
       - "hmf.description=Reverse proxy HTTPS autofirmado"

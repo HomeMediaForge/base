@@ -2,6 +2,7 @@ services:
   redis:
     image: docker.io/valkey/valkey:8-bookworm
     container_name: redis
+    hostname: redis
     restart: unless-stopped
     environment:
       - TZ=${TZ}

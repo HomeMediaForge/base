@@ -3,6 +3,7 @@ services:
     image: ghcr.io/taxel/plextraktsync
     command: watch
     container_name: plextraktsync
+    hostname: plextraktsync
     volumes:
       - ${STACK_CONFIG_DIR}/plextraktsync:/app/config
     environment:

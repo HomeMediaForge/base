@@ -2,6 +2,7 @@ services:
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
     container_name: bazarr
+    hostname: bazarr
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -13,6 +14,11 @@ services:
       - ${STACK_MEDIA_ROUTE_CONCERTS}:/concerts
       - ${STACK_MEDIA_ROUTE_ANIME}:/anime
       - ${STACK_MEDIA_ROUTE_ADULT}:/adult
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bazarr.rule=Host(`${BAZARR_TRAEFIK_HOST:-bazarr}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.bazarr.entrypoints=https"
+      - "traefik.http.services.bazarr.loadbalancer.server.port=6767"
     ports:
       - ${BAZARR_PORT:-6767}:6767
     restart: unless-stopped

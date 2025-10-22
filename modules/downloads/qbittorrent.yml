@@ -2,6 +2,7 @@ services:
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
+    hostname: qbittorrent
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -12,6 +13,11 @@ services:
       - ${STACK_DOWNLOADS_DIR_COMPLETED}:/downloads
       - ${STACK_DOWNLOADS_DIR_INCOMPLETED}:/incompleted
       - ${STACK_BLACKHOLE_DIR}:/blackhole
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.qbittorrent.rule=Host(`${QBITTORRENT_TRAEFIK_HOST:-qbittorrent}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.qbittorrent.entrypoints=https"
+      - "traefik.http.services.qbittorrent.loadbalancer.server.port=${WEBUI_PORT:-8080}"
     ports:
       - ${QBITTORRENT_WEBUI_PORT:-8080}:${WEBUI_PORT:-8080}
       - ${QBITTORRENT_BT_PORT:-6881}:6881

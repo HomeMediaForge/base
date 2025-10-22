@@ -2,6 +2,7 @@ services:
   immich-machine-learning:
     image: ghcr.io/immich-app/immich-machine-learning:release-cuda
     container_name: immich-machine-learning
+    hostname: immich-machine-learning
     runtime: nvidia
     restart: unless-stopped
     deploy:

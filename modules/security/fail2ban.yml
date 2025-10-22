@@ -2,6 +2,7 @@ services:
   fail2ban:
     image: crazymax/fail2ban:latest
     container_name: fail2ban
+    hostname: fail2ban
     restart: unless-stopped
     network_mode: "host" # se mantiene para banear
     cap_add:

@@ -2,6 +2,7 @@ services:
   resilio-sync:
     image: lscr.io/linuxserver/resilio-sync:latest
     container_name: resilio-sync
+    hostname: resilio-sync
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -10,6 +11,11 @@ services:
       - ${STACK_CONFIG_DIR}/rslsync:/config
       - ${STACK_FILES_DIR}/Sync_Data:/downloads
       - ${STACK_FILES_DIR}/Sync_Data:/sync
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.resilio-sync.rule=Host(`${RESILIO_SYNC_TRAEFIK_HOST:-resilio-sync}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.resilio-sync.entrypoints=https"
+      - "traefik.http.services.resilio-sync.loadbalancer.server.port=8888"
     ports:
       - ${RESILIO_WEBUI_PORT:-8888}:8888
       - ${RESILIO_LISTEN_PORT:-55555}:55555

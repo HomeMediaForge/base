@@ -2,6 +2,7 @@ services:
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
+    hostname: sonarr
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -10,6 +11,11 @@ services:
       - ${STACK_CONFIG_DIR}/sonarr:/config
       - ${STACK_MEDIA_ROUTE_TV}:/tv
       - ${STACK_DOWNLOADS_DIR_COMPLETED}:/downloads
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.sonarr.rule=Host(`${SONARR_TRAEFIK_HOST:-sonarr}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.sonarr.entrypoints=https"
+      - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
     ports:
       - ${SONARR_PORT:-8989}:8989
     restart: unless-stopped

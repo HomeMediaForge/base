@@ -2,6 +2,7 @@ services:
   auto-networks:
     image: docker:cli
     container_name: auto-networks
+    hostname: auto-networks
     depends_on:
       glances:
         condition: service_started

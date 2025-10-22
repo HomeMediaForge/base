@@ -2,6 +2,7 @@ services:
   jackett:
     image: lscr.io/linuxserver/jackett:latest
     container_name: jackett
+    hostname: jackett
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -10,6 +11,11 @@ services:
     volumes:
       - ${STACK_CONFIG_DIR}/jackett:/config
       - ${STACK_BLACKHOLE_DIR}:/downloads # Carpeta de descargas tipo blackhole
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jackett.rule=Host(`${JACKETT_TRAEFIK_HOST:-jackett}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.jackett.entrypoints=https"
+      - "traefik.http.services.jackett.loadbalancer.server.port=9117"
     ports:
       - ${JACKETT_PORT:-9117}:9117
     restart: unless-stopped
