@@ -1,11 +1,11 @@
-# ===================================================================
+# ======================================================
 # Autogenerado por docker-gen
-# Cada contenedor activo se registra como nombre.local
-# ===================================================================
-{% for c in containers %}
-{% if c.State.Running and c.NetworkSettings.Networks %}
-{% for net, data in c.NetworkSettings.Networks.items() %}
-address=/{{ c.Name }}.local/{{ data.IPAddress }}
+# Registra cada contenedor activo como nombre.local
+# ======================================================
+{% for container in containers %}
+{% if container.State.Running %}
+{% for net, data in container.NetworkSettings.Networks %}
+address=/{{ container.Name }}.local/{{ data.IPAddress }}
 {% endfor %}
 {% endif %}
 {% endfor %}
