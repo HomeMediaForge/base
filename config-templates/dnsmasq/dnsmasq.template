@@ -7,8 +7,8 @@
 {{ range $container := . }}
   {{ if $container.State.Running }}
     {{ $name := trimPrefix "/" $container.Name }}
-    {{ $network := index $container.NetworkSettings.Networks $netName }}
-    {{ $ip := or (and $network $network.IPAddress) $container.IP }}
+    {{ $network := index $container.Networks $netName }}
+    {{ $ip := or (and $network $network.IPAddress) (and $network $network.IP) $container.IP }}
     {{ if $ip }}
 address=/{{ $name }}.{{ $hostSegment }}.{{ $localDomain }}/{{ $ip }}
 address=/{{ $name }}.local/{{ $ip }}
