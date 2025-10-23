@@ -146,6 +146,34 @@ pgsql
 Copiar código
 avahi-daemon 0.8 starting up.
 Server startup complete. Host name is media.local.
+
+📡 mdns — mDNS Publisher
+Dockerfile: modules/admin/mdns.Dockerfile
+
+Función:
+Genera anuncios mDNS dinámicos (`contenedor.local` y `contenedor.<hostname>.local`) con `mdns-publisher`, eliminando la necesidad de crear archivos `.service` a mano.
+
+Requisitos previos:
+- Define `HMF_MDNS_BIND_ADDRESS` en `.env` con la IP LAN del host.
+- Copia `config-templates/mdns/config.hcl.template` a `${STACK_CONFIG_DIR}/mdns/config.hcl.template`.
+- (Opcional) Sobrescribe el puerto publicado añadiendo la etiqueta `hmf.mdns.port=<puerto>` al contenedor.
+
+Configuración clave:
+```yaml
+mdns:
+  build:
+    context: /opt/HomeMediaForge/modules/admin
+    dockerfile: mdns.Dockerfile
+  network_mode: host
+  volumes:
+    - ${STACK_CONFIG_DIR}/mdns:/etc/mdns
+```
+
+Logs esperados:
+```text
+[mdns-entrypoint] Starting mdns-publisher with /etc/mdns/config.hcl
+[mdns-entrypoint] Reload triggered, restarting mdns-publisher...
+```
 💬 nbns — LLMNR / NetBIOS Responder (Windows Discovery)
 Dockerfile: modules/admin/responder.Dockerfile
 
@@ -166,6 +194,7 @@ Carpeta host	Montaje en contenedor	Propósito
 ${STACK_CONFIG_DIR}/dnsmasq	/etc/dnsmasq.d	Archivos DNS dinámicos
 ${STACK_CONFIG_DIR}/avahi/services	/etc/avahi/services	Anuncios mDNS personalizados
 ${STACK_CONFIG_DIR}/avahi/hosts	/etc/avahi/hosts	Entradas mDNS dinámicas (contenedor.local y contenedor.<hostname>.local)
+${STACK_CONFIG_DIR}/mdns	/etc/mdns	Config HCL autogenerado para mdns-publisher
 
 🧩 Flujo de resolución
 Cliente	Protocolo	Servicio	Resultado

@@ -63,12 +63,15 @@ services:
       - ${STACK_CONFIG_DIR}/dnsmasq/dnsmasq.template:/etc/dnsmasq.d/dnsmasq.template:ro
       - ${STACK_CONFIG_DIR}/avahi/hosts.template:/etc/avahi/hosts.template:ro
       - ${STACK_CONFIG_DIR}/avahi/hosts:/etc/avahi/hosts
+      - ${STACK_CONFIG_DIR}/mdns:/etc/mdns
     command: >
       -notify-sighup dnsbridge
       -watch /etc/dnsmasq.d/dnsmasq.template
       /etc/dnsmasq.d/99-containers.conf
       /etc/avahi/hosts.template
       /etc/avahi/hosts
+      /etc/mdns/config.hcl.template
+      /etc/mdns/config.hcl
     labels:
       - "hmf.module=network"
       - "hmf.description=Auto-registro de contenedores en DNS"
@@ -90,6 +93,29 @@ services:
     labels:
       - "hmf.module=network"
       - "hmf.description=Multicast DNS reflector for local discovery"
+
+  # ---------------------------------------------------
+  # 📡 mDNS SERVICE PUBLISHER (mdns-publisher)
+  # ---------------------------------------------------
+  mdns:
+    build:
+      context: /opt/HomeMediaForge/modules/admin
+      dockerfile: mdns.Dockerfile
+    container_name: mdns
+    hostname: mdns
+    depends_on:
+      - avahi
+      - dnswatcher
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      - MDNS_CONFIG_PATH=/etc/mdns/config.hcl
+      - MDNS_REFRESH_WAIT=${HMF_MDNS_RELOAD_DELAY:-1}
+    volumes:
+      - ${STACK_CONFIG_DIR}/mdns:/etc/mdns
+    labels:
+      - "hmf.module=network"
+      - "hmf.description=mdns-publisher for container hostnames"
 
   # ---------------------------------------------------
   # 💬 LLMNR / NETBIOS RESPONDER (para Windows)
