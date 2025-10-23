@@ -97,8 +97,11 @@ services:
       dockerfile: responder.Dockerfile
     container_name: nbns
     hostname: nbns
+    depends_on:
+      - dnsbridge
     network_mode: host
     environment:
+      - DISABLE_DNS=1
       - NET_IFACE=${NETWORK_INTERFACE:-enp0s3}
     restart: unless-stopped
     labels:
