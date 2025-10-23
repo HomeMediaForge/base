@@ -12,7 +12,7 @@ set -e
 BASE_DIR="$(pwd)"
 CERT_DIR="${BASE_DIR}/config-templates/traefik/certs"
 DAYS_CA=3650   # 10 años
-DAYS_CERT=825  # ~2 años
+DAYS_CERT=3650  # 10 años
 
 # Archivos de salida
 CA_KEY="${CERT_DIR}/hmf-rootCA.key"
