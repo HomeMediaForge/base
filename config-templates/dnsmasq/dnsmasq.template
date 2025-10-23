@@ -11,6 +11,7 @@
     {{ $ip := or (and $network $network.IPAddress) $container.IP }}
     {{ if $ip }}
 address=/{{ $name }}.{{ $hostSegment }}.{{ $localDomain }}/{{ $ip }}
+address=/{{ $name }}.local/{{ $ip }}
     {{ end }}
   {{ end }}
 {{ end }}
