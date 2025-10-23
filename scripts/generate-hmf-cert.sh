@@ -8,6 +8,11 @@
 
 set -e
 
+# Re-ejecutar automáticamente con bash si se invoca como sh
+if [ -z "${BASH_VERSION:-}" ]; then
+  exec /bin/bash "$0" "$@"
+fi
+
 # === Configuración ===
 BASE_DIR="$(pwd)"
 CERT_DIR="${BASE_DIR}/config-templates/traefik/certs"
