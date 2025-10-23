@@ -80,7 +80,9 @@ Ejemplo:
 ini
 Copiar código
 address=/radarr.local/172.18.0.12
+address=/radarr.homemediaforge.local/172.18.0.12
 address=/jellyfin.local/172.18.0.13
+address=/jellyfin.homemediaforge.local/172.18.0.13
 Logs esperados:
 pgsql
 Copiar código
@@ -92,7 +94,7 @@ Imagen: jwilder/docker-gen
 Función:
 Escucha los eventos del socket Docker.
 
-Regenera 99-containers.conf cuando se inicia o detiene un contenedor.
+Regenera 99-containers.conf y `/etc/avahi/hosts` cuando se inicia o detiene un contenedor.
 
 Notifica a dnsbridge mediante señal SIGHUP.
 
@@ -162,7 +164,8 @@ Responder 3.0.6 starting...
 ⚙️ Volúmenes utilizados
 Carpeta host	Montaje en contenedor	Propósito
 ${STACK_CONFIG_DIR}/dnsmasq	/etc/dnsmasq.d	Archivos DNS dinámicos
-${STACK_CONFIG_DIR}/avahi	/etc/avahi/services	Anuncios mDNS personalizados
+${STACK_CONFIG_DIR}/avahi/services	/etc/avahi/services	Anuncios mDNS personalizados
+${STACK_CONFIG_DIR}/avahi/hosts	/etc/avahi/hosts	Entradas mDNS dinámicas (contenedor.local y contenedor.<hostname>.local)
 
 🧩 Flujo de resolución
 Cliente	Protocolo	Servicio	Resultado

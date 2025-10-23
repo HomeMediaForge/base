@@ -1,0 +1,21 @@
+# ============================================================
+# HomeMediaForge - Avahi auto-generated hosts (RuntimeContainer)
+# ============================================================
+{{ $localDomain := or (env "HMF_LOCAL_DOMAIN") "local" }}
+{{ $hostSegment := or (env "HMF_HOST_SEGMENT") "" }}
+{{ range $container := . }}
+{{- if $container.State.Running }}
+{{- $name := trimPrefix "/" $container.Name }}
+{{- range $netName, $network := $container.Networks }}
+{{- if $network.IP }}
+{{ $network.IP }} {{ $name }}.local
+{{- if ne $localDomain "local" }}
+{{ $network.IP }} {{ $name }}.{{ $localDomain }}
+{{- end }}
+{{- if $hostSegment }}
+{{ $network.IP }} {{ $name }}.{{ $hostSegment }}.{{ $localDomain }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{ end }}
