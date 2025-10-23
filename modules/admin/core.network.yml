@@ -63,7 +63,6 @@ services:
       - ${STACK_CONFIG_DIR}/dnsmasq:/etc/dnsmasq.d
       - ${STACK_CONFIG_DIR}/dnsmasq/dnsmasq.template:/etc/dnsmasq.d/dnsmasq.template:ro
     command: >
-      -notify 'sh -c "tr -d \\r < /etc/dnsmasq.d/99-containers.conf | sed \"s/^[[:space:]]*//\" > /etc/dnsmasq.d/99-containers.conf.clean && mv /etc/dnsmasq.d/99-containers.conf.clean /etc/dnsmasq.d/99-containers.conf"'
       -notify-sighup dnsbridge
       -watch /etc/dnsmasq.d/dnsmasq.template
       /etc/dnsmasq.d/99-containers.conf
@@ -101,7 +100,6 @@ services:
       - dnsbridge
     network_mode: host
     environment:
-      - DISABLE_DNS=1
       - NET_IFACE=${NETWORK_INTERFACE:-enp0s3}
     restart: unless-stopped
     labels:
