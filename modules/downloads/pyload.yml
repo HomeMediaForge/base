@@ -12,7 +12,7 @@ services:
       - ${STACK_DOWNLOADS_DIR_COMPLETED}:/downloads
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.pyload.rule=Host(`${PYLOAD_TRAEFIK_HOST:-pyload}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.pyload.rule=Host(`${PYLOAD_TRAEFIK_HOST:-pyload}.${HOSTNAME:-homemediaforge}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.pyload.entrypoints=https"
       - "traefik.http.services.pyload.loadbalancer.server.port=8000"
     depends_on:

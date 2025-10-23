@@ -60,8 +60,9 @@ extendedKeyUsage = serverAuth
 subjectAltName = @alt_names
 
 [alt_names]
-DNS.1 = *.local
-DNS.2 = localhost
+DNS.1 = *.$HOSTNAME.local
+DNS.2 = $HOSTNAME.local
+DNS.3 = localhost
 EOF
 
 # === 5️⃣ Firmar el certificado con la CA ===

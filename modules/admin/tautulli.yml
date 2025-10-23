@@ -11,7 +11,7 @@ services:
       - ${STACK_CONFIG_DIR}/tautulli:/config
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tautulli.rule=Host(`${TAUTULLI_TRAEFIK_HOST:-tautulli}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.tautulli.rule=Host(`${TAUTULLI_TRAEFIK_HOST:-tautulli}.${HOSTNAME:-homemediaforge}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.tautulli.entrypoints=https"
       - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
     depends_on:

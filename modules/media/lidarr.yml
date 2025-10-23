@@ -13,7 +13,7 @@ services:
       - ${STACK_DOWNLOADS_DIR_COMPLETED}:/downloads
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.lidarr.rule=Host(`${LIDARR_TRAEFIK_HOST:-lidarr}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.lidarr.rule=Host(`${LIDARR_TRAEFIK_HOST:-lidarr}.${HOSTNAME:-homemediaforge}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.lidarr.entrypoints=https"
       - "traefik.http.services.lidarr.loadbalancer.server.port=8686"
     depends_on:

@@ -27,7 +27,7 @@ services:
       - ${JELLYFIN_DLNA_PORT:-1900}:1900/udp
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.jellyfin.rule=Host(`${JELLYFIN_TRAEFIK_HOST:-jellyfin}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.jellyfin.rule=Host(`${JELLYFIN_TRAEFIK_HOST:-jellyfin}.${HOSTNAME:-homemediaforge}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.jellyfin.entrypoints=https"
       - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
     depends_on:

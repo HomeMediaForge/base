@@ -12,7 +12,7 @@ services:
       - TZ=${TZ}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.flaresolverr.rule=Host(`${FLARESOLVERR_TRAEFIK_HOST:-flaresolverr}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.flaresolverr.rule=Host(`${FLARESOLVERR_TRAEFIK_HOST:-flaresolverr}.${HOSTNAME:-homemediaforge}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.flaresolverr.entrypoints=https"
       - "traefik.http.services.flaresolverr.loadbalancer.server.port=8191"
     depends_on:
