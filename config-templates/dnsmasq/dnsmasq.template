@@ -1,27 +1,24 @@
 # ============================================================
-# 🧩 HomeMediaForge - dnsmasq auto-generated hosts (RuntimeContainer)
+# HomeMediaForge - dnsmasq auto-generated hosts
+# Compatible con docker-gen RuntimeContainer (.Networks)
 # ============================================================
+{{ $localDomain := or (env "HMF_LOCAL_DOMAIN") "media.local" }}
 {{ $hostSegment := or (env "HMF_HOST_SEGMENT") "homemediaforge" }}
-{{ $localDomain := or (env "HMF_LOCAL_DOMAIN") "local" }}
-{{ $netName := or (env "HOMEMEDIAFORGE_NET_NAME") "homemediaforge_net" }}
 
 {{ range $container := . }}
   {{ if $container.State.Running }}
     {{ $name := trimPrefix "/" $container.Name }}
     {{ $ip := "" }}
 
-    {{/* Buscar red coincidente con $netName o tomar la primera con IP */}}
-    {{ range $i, $n := $container.Networks }}
-      {{ if or (eq $n.Name $netName) (and (eq $ip "") $n.IP) }}
+    {{ range $n := $container.Networks }}
+      {{ if and (eq $ip "") $n.IP }}
         {{ $ip = $n.IP }}
       {{ end }}
     {{ end }}
 
-    {{ if $ip }}
+    {{ if $ip -}}
+address=/{{ $name }}.{{ $localDomain }}/{{ $ip }}
 address=/{{ $name }}.{{ $hostSegment }}.{{ $localDomain }}/{{ $ip }}
-address=/{{ $name }}.local/{{ $ip }}
-    {{ else }}
-# ⚠️ sin IP para {{ $name }}
-    {{ end }}
+    {{- end }}
   {{ end }}
 {{ end }}
