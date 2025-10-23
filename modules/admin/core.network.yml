@@ -81,7 +81,7 @@ services:
   # ---------------------------------------------------
   avahi:
     build:
-      context: /opt/HomeMediaForge/modules/admin
+      context: .
       dockerfile: avahi.Dockerfile
     container_name: avahi
     hostname: avahi
@@ -99,7 +99,7 @@ services:
   # ---------------------------------------------------
   mdns:
     build:
-      context: /opt/HomeMediaForge/modules/admin
+      context: .
       dockerfile: mdns.Dockerfile
     container_name: mdns
     hostname: mdns
@@ -122,7 +122,7 @@ services:
   # ---------------------------------------------------
   nbns:
     build:
-      context: /opt/HomeMediaForge/modules/admin
+      context: .
       dockerfile: responder.Dockerfile
     container_name: nbns
     hostname: nbns
