@@ -32,7 +32,6 @@ services:
       - "--expand-hosts"
       - "--conf-dir=/etc/dnsmasq.d/,*.conf"
       - "--listen-address=0.0.0.0"
-      - "--addn-hosts=/etc/dnsmasq.d/99-containers.conf"
       - "--server=1.1.1.1"
       - "--server=8.8.8.8"
       - "--address=/.local/127.0.0.1"
