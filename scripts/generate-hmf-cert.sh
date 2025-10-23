@@ -2,7 +2,7 @@
 # ===============================================================
 # 🏠 HomeMediaForge - Generador de certificados con CA propia
 # ---------------------------------------------------------------
-# Mantiene nombres hmf.crt / hmf.key, genera CA raíz y firma *.local
+# Mantiene nombres hmf.crt / hmf.key, genera CA raíz y firma dominios locales
 # Ruta destino: config-templates/traefik/certs
 # ===============================================================
 
@@ -13,6 +13,10 @@ BASE_DIR="$(pwd)"
 CERT_DIR="${BASE_DIR}/config-templates/traefik/certs"
 DAYS_CA=3650   # 10 años
 DAYS_CERT=3650  # 10 años
+HMF_HOST_SEGMENT="${HMF_HOST_SEGMENT:-${HOSTNAME:-homemediaforge}}"
+HMF_LOCAL_DOMAIN="${TRAEFIK_LOCAL_DOMAIN:-local}"
+HMF_WILDCARD="*.${HMF_HOST_SEGMENT}.${HMF_LOCAL_DOMAIN}"
+HMF_BASE_DOMAIN="${HMF_HOST_SEGMENT}.${HMF_LOCAL_DOMAIN}"
 
 # Archivos de salida
 CA_KEY="${CERT_DIR}/hmf-rootCA.key"
@@ -47,9 +51,9 @@ else
 fi
 
 # === 3️⃣ Crear CSR (solicitud de firma) ===
-echo "📜 Generando CSR para *.local..."
+echo "📜 Generando CSR para ${HMF_WILDCARD}..."
 openssl req -new -key "$CERT_KEY" -out "$CERT_CSR" \
-  -subj "/C=CL/ST=Valparaiso/L=Vina del Mar/O=HomeMediaForge/CN=*.local"
+  -subj "/C=CL/ST=Valparaiso/L=Vina del Mar/O=HomeMediaForge/CN=${HMF_WILDCARD}"
 
 # === 4️⃣ Crear archivo de extensiones SAN ===
 cat > "$CERT_EXT" <<EOF
@@ -60,8 +64,8 @@ extendedKeyUsage = serverAuth
 subjectAltName = @alt_names
 
 [alt_names]
-DNS.1 = *.$HOSTNAME.local
-DNS.2 = $HOSTNAME.local
+DNS.1 = ${HMF_WILDCARD}
+DNS.2 = ${HMF_BASE_DOMAIN}
 DNS.3 = localhost
 EOF
 
@@ -89,4 +93,4 @@ echo "🔁 Luego reinicia Traefik:"
 echo "    docker restart traefik"
 echo ""
 echo "🧠 Resultado esperado:"
-echo "   https://sonarr.local → 'Emitido por: HomeMediaForge Root CA'"
+echo "   https://sonarr.${HMF_BASE_DOMAIN} → 'Emitido por: HomeMediaForge Root CA'"

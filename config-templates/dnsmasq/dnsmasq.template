@@ -2,13 +2,15 @@
 # 🧩 HomeMediaForge - dnsmasq auto-generated hosts (RuntimeContainer)
 # ============================================================
 {{ $netName := or (env "HOMEMEDIAFORGE_NET_NAME") "homemediaforge_net" }}
+{{ $hostSegment := or (env "HMF_HOST_SEGMENT") "homemediaforge" }}
+{{ $localDomain := or (env "HMF_LOCAL_DOMAIN") "local" }}
 {{ range $container := . }}
   {{ if $container.State.Running }}
     {{ $name := trimPrefix "/" $container.Name }}
     {{ $network := index $container.NetworkSettings.Networks $netName }}
     {{ $ip := or (and $network $network.IPAddress) $container.IP }}
     {{ if $ip }}
-address=/{{ $name }}.local/{{ $ip }}
+address=/{{ $name }}.{{ $hostSegment }}.{{ $localDomain }}/{{ $ip }}
     {{ end }}
   {{ end }}
 {{ end }}

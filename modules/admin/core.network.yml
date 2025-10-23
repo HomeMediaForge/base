@@ -54,6 +54,9 @@ services:
     depends_on:
       - dnsbridge
     restart: unless-stopped
+    environment:
+      - HMF_HOST_SEGMENT=${HOSTNAME:-homemediaforge}
+      - HMF_LOCAL_DOMAIN=${TRAEFIK_LOCAL_DOMAIN:-local}
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ${STACK_CONFIG_DIR}/dnsmasq:/etc/dnsmasq.d
