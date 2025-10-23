@@ -9,7 +9,7 @@
 set -e
 
 # === Configuración ===
-BASE_DIR="/opt/HomeMediaForge"
+BASE_DIR="$(pwd)"
 CERT_DIR="${BASE_DIR}/config-templates/traefik/certs"
 DAYS_CA=3650   # 10 años
 DAYS_CERT=825  # ~2 años
