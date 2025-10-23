@@ -63,7 +63,7 @@ services:
       - ${STACK_CONFIG_DIR}/dnsmasq:/etc/dnsmasq.d
       - ${STACK_CONFIG_DIR}/dnsmasq/dnsmasq.template:/etc/dnsmasq.d/dnsmasq.template:ro
     command: >
-      -notify 'sh -c "sed -i s/\r$// /etc/dnsmasq.d/99-containers.conf"'
+      -notify 'sh -c "tr -d \\r < /etc/dnsmasq.d/99-containers.conf | sed \"s/^[[:space:]]*//\" > /etc/dnsmasq.d/99-containers.conf.clean && mv /etc/dnsmasq.d/99-containers.conf.clean /etc/dnsmasq.d/99-containers.conf"'
       -notify-sighup dnsbridge
       -watch /etc/dnsmasq.d/dnsmasq.template
       /etc/dnsmasq.d/99-containers.conf
