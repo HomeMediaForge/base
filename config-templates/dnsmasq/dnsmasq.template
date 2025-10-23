@@ -1,5 +1,5 @@
 # ============================================================
-# 🧩 HomeMediaForge - dnsmasq auto-generated hosts (RuntimeContainer)
+# HomeMediaForge - dnsmasq auto-generated hosts (RuntimeContainer)
 # ============================================================
 {{ $localDomain := or (env "HMF_LOCAL_DOMAIN") "media.local" }}
 {{ range $container := . }}
