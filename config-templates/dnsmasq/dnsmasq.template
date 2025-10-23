@@ -6,9 +6,10 @@
 {{- if $container.State.Running }}
 {{- $name := trimPrefix "/" $container.Name }}
 {{- range $netName, $network := $container.Networks }}
-{{- if $network.IP }}
-address=/{{ $name }}.local/{{ $network.IP }}
-address=/{{ $name }}.{{ $localDomain }}/{{ $network.IP }}
+{{- $ip := or $network.IPAddress $network.IP }}
+{{- if $ip }}
+address=/{{ $name }}.local/{{ $ip }}
+address=/{{ $name }}.{{ $localDomain }}/{{ $ip }}
 {{- end }}
 {{- end }}
 {{- end }}
