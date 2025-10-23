@@ -6,15 +6,13 @@
 {{- if $container.State.Running }}
 {{- $name := trimPrefix "/" $container.Name }}
 {{- range $netName, $network := $container.Networks }}
-{{- $ipv4 := or $network.IPAddress $network.IP $network.IPv4Address }}
-{{- if and $ipv4 (ne $ipv4 "0.0.0.0") }}
-address=/{{ $name }}.local/{{ $ipv4 }}
-address=/{{ $name }}.{{ $localDomain }}/{{ $ipv4 }}
+{{- if $network.IP }}
+address=/{{ $name }}.local/{{ $network.IP }}
+address=/{{ $name }}.{{ $localDomain }}/{{ $network.IP }}
 {{- end }}
-{{- $ipv6 := or $network.GlobalIPv6Address $network.IPv6Address }}
-{{- if and $ipv6 (ne $ipv6 "::") }}
-address=/{{ $name }}.local/{{ $ipv6 }}
-address=/{{ $name }}.{{ $localDomain }}/{{ $ipv6 }}
+{{- if $network.GlobalIPv6Address }}
+address=/{{ $name }}.local/{{ $network.GlobalIPv6Address }}
+address=/{{ $name }}.{{ $localDomain }}/{{ $network.GlobalIPv6Address }}
 {{- end }}
 {{- end }}
 {{- end }}
