@@ -22,4 +22,4 @@ WORKDIR /opt/Responder
 ENV NET_IFACE=enp0s3
 
 # 6️⃣ Ejecutar en modo escucha total (LLMNR + NBNS + mDNS)
-ENTRYPOINT ["sh", "-c", "python3 Responder.py -I ${NET_IFACE} -wd"]
+ENTRYPOINT ["sh", "-c", "python3 Responder.py -I ${NET_IFACE} -wd --disable-dns"]
