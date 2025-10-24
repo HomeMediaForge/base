@@ -22,6 +22,7 @@ services:
       - "traefik.enable=${SWAG_TRAEFIK_ENABLE:-false}"
       - "traefik.http.routers.swag.rule=Host(`${SWAG_TRAEFIK_HOST:-swag}.${TRAEFIK_LOCAL_DOMAIN:-local}`) || Host(`${SWAG_TRAEFIK_HOST:-swag}.${HOSTNAME:-homemediaforge}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.swag.entrypoints=https"
+      - "traefik.http.routers.swag.tls.certresolver=hmf"
       - "traefik.http.services.swag.loadbalancer.server.port=443"
       - "traefik.http.services.swag.loadbalancer.server.scheme=${SWAG_TRAEFIK_SCHEME:-https}"
     depends_on:

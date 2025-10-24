@@ -177,6 +177,11 @@ services:
       - "--log.level=${TRAEFIK_LOG_LEVEL:-INFO}"
       # ⚙️ Seguridad y certificados
       - "--serversTransport.insecureSkipVerify=${TRAEFIK_INSECURE_SKIP_VERIFY:-true}"
+      # 🔐 ACME (step-ca)
+      - "--certificatesresolvers.hmf.acme.caServer=${STEP_CA_ACME_DIRECTORY:-https://127.0.0.1:9000/acme/hmf-acme/directory}"
+      - "--certificatesresolvers.hmf.acme.email=${STEP_CA_ACME_EMAIL:-admin@homemediaforge.local}"
+      - "--certificatesresolvers.hmf.acme.storage=/etc/traefik/acme.json"
+      - "--certificatesresolvers.hmf.acme.tlschallenge=true"
     healthcheck:
       test: ["CMD", "traefik", "healthcheck", "--ping"]
       interval: 30s

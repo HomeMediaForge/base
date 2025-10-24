@@ -47,6 +47,25 @@ Copiar código
 
 ---
 
+## 🔐 Certificados automáticos (step-ca + Traefik)
+
+1. Inicializa la CA interna:
+   ```bash
+   ./scripts/bootstrap-step-ca.sh
+   ```
+   Se generan `/config/step-ca/{config,certs,secrets,db}` y una policy que permite `*.local`, `*.homemediaforge.local`, etc.
+2. Copia `config/step-ca/certs/root_ca.crt` a tus equipos y agrégalo como autoridad de confianza.
+3. Prepara el storage de Traefik y levanta la red:
+   ```bash
+   touch config/traefik/acme.json
+   chmod 600 config/traefik/acme.json
+   docker compose -f modules/admin/core.network.yml -f modules/admin/step-ca.yml up -d
+   ```
+   Traefik almacenará los certificados emitidos en `config/traefik/acme.json`.
+4. Verifica con `openssl s_client -connect 127.0.0.1:443 -servername radarr.local` que la cadena provenga de “HomeMediaForge Internal CA”.
+
+---
+
 ## 🧠 `dnsbridge` — DNS Bridge Interno
 
 **Imagen:** `jpillora/dnsmasq:latest`  

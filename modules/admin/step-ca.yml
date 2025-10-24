@@ -1,0 +1,24 @@
+services:
+  stepca:
+    image: smallstep/step-ca:${STEP_CA_VERSION:-0.28.0}
+    container_name: stepca
+    hostname: step-ca
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      - STEP_CA_CONFIG=/home/step/config/ca.json
+      - STEP_CA_PASSWORD_FILE=/home/step/secrets/password.txt
+      - STEP_CA_ACME_PROVISIONER=${STEP_CA_ACME_PROVISIONER:-hmf-acme}
+    volumes:
+      - ${STACK_CONFIG_DIR}/step-ca/config:/home/step/config
+      - ${STACK_CONFIG_DIR}/step-ca/certs:/home/step/certs
+      - ${STACK_CONFIG_DIR}/step-ca/secrets:/home/step/secrets
+      - ${STACK_CONFIG_DIR}/step-ca/db:/home/step/db
+    command:
+      - "step-ca"
+      - "--password-file=/home/step/secrets/password.txt"
+      - "--address=${STEP_CA_LISTEN_ADDR:-0.0.0.0:9000}"
+      - "/home/step/config/ca.json"
+    labels:
+      - "hmf.module=network"
+      - "hmf.description=Internal ACME certificate authority"

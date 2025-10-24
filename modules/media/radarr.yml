@@ -16,6 +16,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.radarr.rule=Host(`${RADARR_TRAEFIK_HOST:-radarr}.${TRAEFIK_LOCAL_DOMAIN:-local}`) || Host(`${RADARR_TRAEFIK_HOST:-radarr}.${HOSTNAME:-homemediaforge}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.radarr.entrypoints=https"
+      - "traefik.http.routers.radarr.tls.certresolver=hmf"
       - "traefik.http.services.radarr.loadbalancer.server.port=7878"
     depends_on:
       - traefik

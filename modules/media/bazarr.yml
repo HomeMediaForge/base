@@ -18,6 +18,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.bazarr.rule=Host(`${BAZARR_TRAEFIK_HOST:-bazarr}.${TRAEFIK_LOCAL_DOMAIN:-local}`) || Host(`${BAZARR_TRAEFIK_HOST:-bazarr}.${HOSTNAME:-homemediaforge}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.bazarr.entrypoints=https"
+      - "traefik.http.routers.bazarr.tls.certresolver=hmf"
       - "traefik.http.services.bazarr.loadbalancer.server.port=6767"
     depends_on:
       - traefik

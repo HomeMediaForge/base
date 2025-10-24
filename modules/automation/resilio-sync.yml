@@ -15,6 +15,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.resilio-sync.rule=Host(`${RESILIO_SYNC_TRAEFIK_HOST:-resilio-sync}.${TRAEFIK_LOCAL_DOMAIN:-local}`) || Host(`${RESILIO_SYNC_TRAEFIK_HOST:-resilio-sync}.${HOSTNAME:-homemediaforge}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.resilio-sync.entrypoints=https"
+      - "traefik.http.routers.resilio-sync.tls.certresolver=hmf"
       - "traefik.http.services.resilio-sync.loadbalancer.server.port=8888"
     depends_on:
       - traefik

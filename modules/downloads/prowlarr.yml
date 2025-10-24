@@ -13,6 +13,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.prowlarr.rule=Host(`${PROWLARR_TRAEFIK_HOST:-prowlarr}.${TRAEFIK_LOCAL_DOMAIN:-local}`) || Host(`${PROWLARR_TRAEFIK_HOST:-prowlarr}.${HOSTNAME:-homemediaforge}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.prowlarr.entrypoints=https"
+      - "traefik.http.routers.prowlarr.tls.certresolver=hmf"
       - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
     depends_on:
       - traefik

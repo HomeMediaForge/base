@@ -15,6 +15,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.jackett.rule=Host(`${JACKETT_TRAEFIK_HOST:-jackett}.${TRAEFIK_LOCAL_DOMAIN:-local}`) || Host(`${JACKETT_TRAEFIK_HOST:-jackett}.${HOSTNAME:-homemediaforge}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.jackett.entrypoints=https"
+      - "traefik.http.routers.jackett.tls.certresolver=hmf"
       - "traefik.http.services.jackett.loadbalancer.server.port=9117"
     depends_on:
       - traefik

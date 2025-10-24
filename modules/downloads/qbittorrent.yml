@@ -17,6 +17,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.qbittorrent.rule=Host(`${QBITTORRENT_TRAEFIK_HOST:-qbittorrent}.${TRAEFIK_LOCAL_DOMAIN:-local}`) || Host(`${QBITTORRENT_TRAEFIK_HOST:-qbittorrent}.${HOSTNAME:-homemediaforge}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.qbittorrent.entrypoints=https"
+      - "traefik.http.routers.qbittorrent.tls.certresolver=hmf"
       - "traefik.http.services.qbittorrent.loadbalancer.server.port=${WEBUI_PORT:-8080}"
     depends_on:
       - traefik

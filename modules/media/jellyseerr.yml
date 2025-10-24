@@ -14,6 +14,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.jellyseerr.rule=Host(`${JELLYSEERR_TRAEFIK_HOST:-jellyseerr}.${TRAEFIK_LOCAL_DOMAIN:-local}`) || Host(`${JELLYSEERR_TRAEFIK_HOST:-jellyseerr}.${HOSTNAME:-homemediaforge}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.jellyseerr.entrypoints=https"
+      - "traefik.http.routers.jellyseerr.tls.certresolver=hmf"
       - "traefik.http.services.jellyseerr.loadbalancer.server.port=5055"
     depends_on:
       - traefik

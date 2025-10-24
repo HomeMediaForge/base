@@ -15,6 +15,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.whisparr.rule=Host(`${WHISPARR_TRAEFIK_HOST:-whisparr}.${TRAEFIK_LOCAL_DOMAIN:-local}`) || Host(`${WHISPARR_TRAEFIK_HOST:-whisparr}.${HOSTNAME:-homemediaforge}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.whisparr.entrypoints=https"
+      - "traefik.http.routers.whisparr.tls.certresolver=hmf"
       - "traefik.http.services.whisparr.loadbalancer.server.port=6969"
     depends_on:
       - traefik
