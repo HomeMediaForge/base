@@ -1,4 +1,0 @@
-tls:
-  certificates:
-    - certFile: /certs/hmf.crt
-      keyFile: /certs/hmf.key
