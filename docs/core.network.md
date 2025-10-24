@@ -174,6 +174,40 @@ Logs esperados:
 [mdns-entrypoint] Starting mdns-publisher with /etc/mdns/config.hcl
 [mdns-entrypoint] Reload triggered, restarting mdns-publisher...
 ```
+
+Automatiza la detección de IP:
+- Ejecuta el helper `scripts/update-mdns-bind-ip.sh --restart` para actualizar `.env` y reiniciar `mdns`.
+- Opcional: crea un timer de systemd que corra el script cada pocos minutos, por ejemplo:
+
+```ini
+# /etc/systemd/system/hmf-mdns-ip.service
+[Unit]
+Description=Actualiza HMF_MDNS_BIND_ADDRESS automáticamente
+
+[Service]
+Type=oneshot
+ExecStart=/opt/HomeMediaForge/base.git/scripts/update-mdns-bind-ip.sh --env-file /opt/HomeMediaForge/base.git/.env --compose-dir /opt/HomeMediaForge/base.git --restart
+```
+
+```ini
+# /etc/systemd/system/hmf-mdns-ip.timer
+[Unit]
+Description=Chequea cambios de IP para mdns-publisher
+
+[Timer]
+OnBootSec=2m
+OnUnitActiveSec=5m
+
+[Install]
+WantedBy=timers.target
+```
+
+Actívalo con:
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now hmf-mdns-ip.timer
+```
+⚠️ Ajusta las rutas anteriores según el directorio real donde tengas desplegada la stack.
 💬 nbns — LLMNR / NetBIOS Responder (Windows Discovery)
 Dockerfile: modules/admin/responder.Dockerfile
 

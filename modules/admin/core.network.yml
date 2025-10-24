@@ -66,6 +66,7 @@ services:
       - ${STACK_CONFIG_DIR}/mdns:/etc/mdns
     command: >
       -notify-sighup dnsbridge
+      -notify-sighup avahi
       -watch /etc/dnsmasq.d/dnsmasq.template
       /etc/dnsmasq.d/99-containers.conf
       /etc/avahi/hosts.template
