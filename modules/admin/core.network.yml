@@ -57,6 +57,7 @@ services:
     environment:
       - HMF_HOST_SEGMENT=${HMF_HOST_SEGMENT:-homemediaforge}
       - HMF_LOCAL_DOMAIN=${TRAEFIK_LOCAL_DOMAIN:-local}
+      - HMF_MDNS_BIND_ADDRESS=${HMF_MDNS_BIND_ADDRESS:-}
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ${STACK_CONFIG_DIR}/dnsmasq:/etc/dnsmasq.d
@@ -112,6 +113,7 @@ services:
     environment:
       - MDNS_CONFIG_PATH=/etc/mdns/config.hcl
       - MDNS_REFRESH_WAIT=${HMF_MDNS_RELOAD_DELAY:-1}
+      - HMF_MDNS_BIND_ADDRESS=${HMF_MDNS_BIND_ADDRESS}
     volumes:
       - ${STACK_CONFIG_DIR}/mdns:/etc/mdns
     labels:

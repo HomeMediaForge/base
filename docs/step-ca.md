@@ -61,6 +61,9 @@ ${STACK_CONFIG_DIR}/step-ca/
 
 3. **Arrancar servicios**
    ```bash
+   rsync -a config-templates/ ${STACK_CONFIG_DIR:-config}/
+   touch ${STACK_CONFIG_DIR:-config}/traefik/acme.json
+   chmod 600 ${STACK_CONFIG_DIR:-config}/traefik/acme.json
    docker compose \
      -f modules/admin/core.network.yml \
      -f modules/admin/step-ca.yml up -d
