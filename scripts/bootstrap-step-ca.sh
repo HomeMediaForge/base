@@ -67,7 +67,6 @@ if [[ ! -f "${CONFIG_DIR}/ca.json" ]]; then
       --password-file /home/step/secrets/password.txt \
       --acme \
       --deployment-type standalone \
-      --template \
       --force
   echo "✓ step-ca inicializado en ${STEP_CA_DIR}"
 else
