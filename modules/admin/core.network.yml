@@ -1,0 +1,109 @@
+services:
+  traefik:
+    image: traefik:${TRAEFIK_VERSION:-v3.1}
+    container_name: traefik
+    hostname: traefik
+    restart: unless-stopped
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=${HOMEMEDIAFORGE_NET_NAME:-homemediaforge_net}
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
+      - --entrypoints.http.address=:${TRAEFIK_HTTP_PORT:-80}
+      - --entrypoints.https.address=:${TRAEFIK_HTTPS_PORT:-443}
+      - --entrypoints.https.http.tls=true
+      - --serverstransport.insecureskipverify=${TRAEFIK_INSECURE_SKIP_VERIFY:-true}
+      - --api.dashboard=${TRAEFIK_API_DASHBOARD:-true}
+      - --log.level=${TRAEFIK_LOG_LEVEL:-INFO}
+    ports:
+      - ${TRAEFIK_HTTP_PORT:-80}:80
+      - ${TRAEFIK_HTTPS_PORT:-443}:443
+    volumes:
+      - ${STACK_CONFIG_DIR}/traefik/dynamic:/etc/traefik/dynamic
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      homemediaforge_net:
+        ipv4_address: ${TRAEFIK_IPV4:-172.30.0.2}
+    labels:
+      - hmf.module=network
+      - hmf.description=Reverse proxy and ACME gateway
+
+  avahi:
+    build:
+      context: .
+      dockerfile: avahi.Dockerfile
+    container_name: avahi
+    hostname: ${HOSTNAME}
+    restart: unless-stopped
+    network_mode: host
+    entrypoint:
+      - /bin/sh
+    command:
+      - -c
+      - |
+        set -ex
+        HOSTNAME_VALUE=$(cat /etc/hostname)
+        INTERFACE="${NETWORK_INTERFACE:-eth0}"
+        DOMAIN="${TRAEFIK_LOCAL_DOMAIN:-local}"
+        printf '%s\n' \
+          "[server]" \
+          "host-name=$${HOSTNAME_VALUE}" \
+          "domain-name=$${DOMAIN}" \
+          "use-ipv4=yes" \
+          "use-ipv6=no" \
+          "allow-interfaces=$${INTERFACE}" \
+          "enable-dbus=no" \
+          "" \
+          "[publish]" \
+          "publish-workstation=yes" \
+          "publish-addresses=yes" \
+          "publish-hinfo=yes" \
+          "publish-domain=yes" \
+          "" \
+          "[reflector]" \
+          "enable-reflector=yes" \
+          > /etc/avahi/avahi-daemon.conf
+        mkdir -p /run/dbus
+        rm -f /run/dbus/dbus.pid
+        dbus-daemon --system &
+        sleep 1
+        exec /usr/sbin/avahi-daemon --no-drop-root --debug
+    environment:
+      - NETWORK_INTERFACE=${NETWORK_INTERFACE:-eth0}
+      - TRAEFIK_LOCAL_DOMAIN=${TRAEFIK_LOCAL_DOMAIN:-local}
+    volumes:
+      - ${STACK_CONFIG_DIR}/avahi/services:/etc/avahi/services
+      - ${STACK_CONFIG_DIR}/avahi/hosts:/etc/avahi/hosts
+    labels:
+      - hmf.module=network
+      - hmf.description=mDNS reflector and host announcer
+
+  nbns:
+    build:
+      context: .
+      dockerfile: responder.Dockerfile
+    container_name: nbns
+    hostname: ${HOSTNAME}
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - NET_IFACE=${NETWORK_INTERFACE:-eth0}
+    labels:
+      - hmf.module=network
+      - hmf.description=LLMNR and NetBIOS responder
+    entrypoint:
+      - /bin/sh
+    command:
+      - -c
+      - |
+        set -ex
+        python3 Responder.py -I "$${NET_IFACE}" -w -d
+
+networks:
+  homemediaforge_net:
+    name: ${HOMEMEDIAFORGE_NET_NAME:-homemediaforge_net}
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${HOMEMEDIAFORGE_NET_SUBNET:-172.30.0.0/24}

@@ -34,7 +34,7 @@ include:
   #- modules/media/bazarr.yml
   #- modules/media/calibre.yml
   #- modules/media/flaresolverr.yml
-  #- modules/media/jellyfin-intel.yml  # Activar en para usar GPU intel 
+  #- modules/media/jellyfin-intel.yml  # Activar en para usar GPU intel
   #- modules/media/jellyfin-nvidia.yml  # Activar para usar GPU NVIDIA
   #- modules/media/jellyfin.yml         # Desactivar si se activa otra variante
   #- modules/media/jellyseerr.yml
