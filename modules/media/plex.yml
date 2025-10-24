@@ -21,7 +21,7 @@ services:
       - ${STACK_MEDIA_TRANSCODE_DIR}:/transcode
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.plex.rule=Host(`${PLEX_TRAEFIK_HOST:-plex}.${HOSTNAME:-homemediaforge}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.plex.rule=Host(`${PLEX_TRAEFIK_HOST:-plex}.${TRAEFIK_LOCAL_DOMAIN:-local}`) || Host(`${PLEX_TRAEFIK_HOST:-plex}.${HOSTNAME:-homemediaforge}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.plex.entrypoints=https"
       - "traefik.http.services.plex.loadbalancer.server.port=32400"
     depends_on:

@@ -33,7 +33,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.immich.rule=Host(`${IMMICH_TRAEFIK_HOST:-immich}.${HOSTNAME:-homemediaforge}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.immich.rule=Host(`${IMMICH_TRAEFIK_HOST:-immich}.${TRAEFIK_LOCAL_DOMAIN:-local}`) || Host(`${IMMICH_TRAEFIK_HOST:-immich}.${HOSTNAME:-homemediaforge}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.immich.entrypoints=https"
       - "traefik.http.services.immich.loadbalancer.server.port=2283"
     ports:

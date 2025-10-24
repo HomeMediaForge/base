@@ -11,7 +11,7 @@ services:
       - ${STACK_CONFIG_DIR}/overseer:/config
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.overseerr.rule=Host(`${OVERSEERR_TRAEFIK_HOST:-overseerr}.${HOSTNAME:-homemediaforge}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
+      - "traefik.http.routers.overseerr.rule=Host(`${OVERSEERR_TRAEFIK_HOST:-overseerr}.${TRAEFIK_LOCAL_DOMAIN:-local}`) || Host(`${OVERSEERR_TRAEFIK_HOST:-overseerr}.${HOSTNAME:-homemediaforge}.${TRAEFIK_LOCAL_DOMAIN:-local}`)"
       - "traefik.http.routers.overseerr.entrypoints=https"
       - "traefik.http.services.overseerr.loadbalancer.server.port=5055"
     depends_on:
