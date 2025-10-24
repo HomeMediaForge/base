@@ -8,6 +8,22 @@ SLEEP_AFTER_RELOAD="${MDNS_REFRESH_WAIT:-1}"
 mkdir -p "${WATCH_DIR}"
 touch "${CONFIG_PATH}"
 
+BIND_IP="${HMF_MDNS_BIND_ADDRESS:-${MDNS_BIND_ADDRESS:-}}"
+DEFAULT_COLLISION="${HMF_MDNS_COLLISION_STRATEGY:-hostname}"
+
+if [[ ! -s "${CONFIG_PATH}" ]]; then
+  if [[ -n "${BIND_IP}" ]]; then
+    cat > "${CONFIG_PATH}" <<EOF
+bind_address = "${BIND_IP}"
+collision_avoidance = "${DEFAULT_COLLISION}"
+EOF
+  else
+    cat > "${CONFIG_PATH}" <<'EOF'
+# mdns-publisher: bind_address vacío. Establece HMF_MDNS_BIND_ADDRESS en tu .env
+EOF
+  fi
+fi
+
 terminate_children() {
   pkill -TERM -P $$ >/dev/null 2>&1 || true
   wait >/dev/null 2>&1 || true
