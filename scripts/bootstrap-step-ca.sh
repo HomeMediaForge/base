@@ -66,8 +66,7 @@ if [[ ! -f "${CONFIG_DIR}/ca.json" ]]; then
       --provisioner-password-file /home/step/secrets/provisioner_password.txt \
       --password-file /home/step/secrets/password.txt \
       --acme \
-      --deployment-type standalone \
-      --force
+      --deployment-type standalone
   echo "✓ step-ca inicializado en ${STEP_CA_DIR}"
 else
   echo "• step-ca ya inicializado, actualizando configuración"
